@@ -6,7 +6,9 @@ const JUMP_VELOCITY = -600.0
 
 var double_jumps_left = 1
 var face_right = true
+var legs_face_right = true
 var look_position = Vector2.ZERO
+var speed = SPEED
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
 @onready var lower_body_sprite = $LowerBodySprite
@@ -52,19 +54,29 @@ func _physics_process(delta):
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and (is_on_floor() or double_jumps_left >=0):
-		velocity.y = JUMP_VELOCITY
 		double_jumps_left = double_jumps_left - 1
+		if double_jumps_left == -1:
+			var tween = get_tree().create_tween()
+			var tween_rotation_value = 6.28319 if legs_face_right else -6.28319 
+			tween.tween_property(self, "rotation", tween_rotation_value, 0.25)
+		velocity.y = JUMP_VELOCITY
 		print(double_jumps_left)
 
 	# Reset horizontal velocity
 	velocity.x = 0
 	# Handle movement
+	if Input.is_action_pressed("sprint") and is_on_floor():
+		speed = 800.0
+	else:
+		speed = SPEED 
 	if Input.is_action_pressed("move_right"):
-		velocity.x += 1 * SPEED
+		velocity.x += 1 * speed
 		lower_body_sprite.flip_h = false
+		legs_face_right = true
 	if Input.is_action_pressed("move_left"):
-		velocity.x -= 1 * SPEED
+		velocity.x -= 1 * speed
 		lower_body_sprite.flip_h = true
+		legs_face_right = false
 		
 	if velocity.x == 0 and is_on_floor():
 		lower_body_sprite.play("idle")

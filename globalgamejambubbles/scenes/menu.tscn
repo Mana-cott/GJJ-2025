@@ -25,7 +25,7 @@ text = "Play"
 
 [node name="ToggleLookMode" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Mouse"
+text = "Arrow Keys"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ToggleLookMode" to="." method="_on_toggle_look_mode_pressed"]

@@ -1,3 +1,3 @@
 extends Node
 
-var look_mode = "mouse"
+var look_mode = "arrowkeys"
