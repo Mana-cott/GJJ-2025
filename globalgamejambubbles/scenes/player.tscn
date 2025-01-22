@@ -198,6 +198,7 @@ height = 34.0
 script = ExtResource("1_oqhaq")
 
 [node name="LowerBodySprite" type="AnimatedSprite2D" parent="."]
+z_index = 3
 position = Vector2(3, -8)
 scale = Vector2(0.764648, 0.764648)
 sprite_frames = SubResource("SpriteFrames_pwgw1")
@@ -206,6 +207,7 @@ frame = 8
 frame_progress = 0.756196
 
 [node name="UpperBody" type="Node2D" parent="."]
+z_index = 4
 
 [node name="UpperBodySprite" type="AnimatedSprite2D" parent="UpperBody"]
 position = Vector2(2, -11)

@@ -2,6 +2,9 @@ extends CharacterBody2D
 
 const SPEED = 600.0
 const JUMP_VELOCITY = -600.0
+const SLIDE_SPEED = 1200.0
+const SLIDE_DURATION = 0.5
+const SLIDE_GRAVITY = 1500.0
 
 var double_jumps_left = 1
 var face_right = true
@@ -9,6 +12,8 @@ var should_be_facing_right = true
 var legs_face_right = true
 var mouse_position = Vector2.ZERO
 var speed = SPEED
+var sliding = false
+var slide_timer = 0.0
 
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
@@ -50,8 +55,20 @@ func _physics_process(delta):
 			
 	if Input.is_action_pressed("shoot_bullet"):
 		shoot_bullet()
-	
-	# Add the gravity.
+
+	# Handle Slide.
+	if sliding:
+		slide_timer -= delta
+		if slide_timer <= 0:
+			sliding = false
+			lower_body_collision_shape.disabled = false
+		else:
+			velocity.y += SLIDE_GRAVITY * delta
+			velocity.x = SLIDE_SPEED * (1 if legs_face_right else -1)
+			move_and_slide()
+			return
+
+	# Handle gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		lower_body_sprite.play("freefall")
@@ -59,14 +76,15 @@ func _physics_process(delta):
 		double_jumps_left = 1
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and (is_on_floor() or double_jumps_left >=0):
-		double_jumps_left = double_jumps_left - 1
-		velocity.y = JUMP_VELOCITY
-		print(double_jumps_left)
+	if Input.is_action_just_pressed("jump"):
+		if is_on_floor():
+			velocity.y = JUMP_VELOCITY
+		elif double_jumps_left > 0:
+			velocity.y = JUMP_VELOCITY
+			double_jumps_left -= 1
 
-	# Reset horizontal velocity
-	velocity.x = 0
 	# Handle movement
+	velocity.x = 0
 	if Input.is_action_pressed("sprint") and is_on_floor():
 		speed = 1000.0
 		lower_body_sprite.play("sprint")
@@ -81,6 +99,17 @@ func _physics_process(delta):
 		lower_body_sprite.flip_h = true
 		legs_face_right = false
 		
+	# Trigger slide.
+	if Input.is_action_just_pressed("crouch") and velocity.x != 0 and is_on_floor():
+		sliding = true
+		slide_timer = SLIDE_DURATION
+		lower_body_collision_shape.disabled = true
+		lower_body_sprite.play("slide")
+		velocity.x = SLIDE_SPEED * (1 if face_right else -1)
+		move_and_slide()
+		return
+
+	# Handle animations.
 	if velocity.x == 0 and is_on_floor():
 		lower_body_sprite.play("idle")
 	elif velocity.x != 0 and is_on_floor():
@@ -88,6 +117,7 @@ func _physics_process(delta):
 
 	move_and_slide()
 
+# Create and shoot a bullet
 func shoot_bullet():
 	var bullet = bullet.instantiate()
 	bullet.dir = upper_body.rotation
