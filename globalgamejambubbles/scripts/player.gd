@@ -67,7 +67,8 @@ func _physics_process(delta):
 	velocity.x = 0
 	# Handle movement
 	if Input.is_action_pressed("sprint") and is_on_floor():
-		speed = 800.0
+		speed = 1000.0
+		lower_body_sprite.play("sprint")
 	else:
 		speed = SPEED 
 	if Input.is_action_pressed("move_right"):
