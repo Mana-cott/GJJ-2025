@@ -1,12 +1,14 @@
-extends Area2D
+extends CharacterBody2D
 
-var speed = 750
+var pos:Vector2
+var rot:float
+var dir:float
+var speed = 1000
 
+func _ready():
+	global_position = pos
+	global_rotation = rot
+	
 func _physics_process(delta):
-	position += transform.x * speed * delta
-
-
-func _on_body_entered(body):
-	if body.is_in_group("players"):
-		pass
-	queue_free()
+	velocity = Vector2(speed,0).rotated(dir)
+	move_and_slide()

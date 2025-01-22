@@ -220,7 +220,8 @@ collision_mask = 2
 hit_from_inside = true
 
 [node name="Muzzle" type="Marker2D" parent="UpperBody"]
-position = Vector2(23, 2)
+position = Vector2(26, 2)
+rotation = 1.70792
 
 [node name="Camera2D" type="Camera2D" parent="."]
 

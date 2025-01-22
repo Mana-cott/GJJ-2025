@@ -14,7 +14,8 @@ var speed = SPEED
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
 @onready var lower_body_sprite = $LowerBodySprite
 @onready var lower_body_collision_shape = $LowerBodyCollisionShape
-@export var Bullet: PackedScene
+
+@onready var bullet = preload("res://scenes/bullet.tscn")
 
 func _physics_process(delta):
 	if Global.look_mode == "mouse":
@@ -47,7 +48,7 @@ func _physics_process(delta):
 		elif Input.is_action_pressed("look_right"):
 			face_right = true
 			
-	if Input.is_action_just_pressed("shoot_bullet"):
+	if Input.is_action_pressed("shoot_bullet"):
 		shoot_bullet()
 	
 	# Add the gravity.
@@ -88,6 +89,8 @@ func _physics_process(delta):
 	move_and_slide()
 
 func shoot_bullet():
-	var bullet = Bullet.instantiate()
-	owner.add_child(bullet)
-	bullet.transform = $UpperBody/Muzzle.global_transform
+	var bullet = bullet.instantiate()
+	bullet.dir = upper_body.rotation
+	bullet.pos = $UpperBody/Muzzle.global_position
+	bullet.rot = $UpperBody/Muzzle.global_rotation
+	get_tree().current_scene.add_child(bullet)
