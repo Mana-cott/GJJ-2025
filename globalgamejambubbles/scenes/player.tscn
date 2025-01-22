@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://chmwbafs6r60"]
+[gd_scene load_steps=20 format=3 uid="uid://chmwbafs6r60"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_oqhaq"]
 [ext_resource type="Texture2D" uid="uid://dhwxydkih42re" path="res://assets/sprites/dangling_leg2.png" id="2_30346"]
@@ -112,6 +112,8 @@ height = 34.0
 radius = 7.0
 height = 34.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_qwv10"]
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_oqhaq")
 
@@ -128,10 +130,14 @@ position = Vector2(2, -11)
 scale = Vector2(0.773438, 0.773438)
 sprite_frames = SubResource("SpriteFrames_vbhm7")
 
-[node name="RayCast2D" type="RayCast2D" parent="UpperBody"]
-position = Vector2(0, -2)
+[node name="SignifierRayCast" type="RayCast2D" parent="UpperBody"]
 scale = Vector2(1.00146, 1)
-target_position = Vector2(25, 0)
+target_position = Vector2(118.827, 0)
+collision_mask = 2
+hit_from_inside = true
+
+[node name="Muzzle" type="Marker2D" parent="UpperBody"]
+position = Vector2(23, 2)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -143,3 +149,20 @@ shape = SubResource("CapsuleShape2D_e5dpl")
 position = Vector2(2, 9)
 rotation = -1.57066
 shape = SubResource("CapsuleShape2D_3g0k1")
+
+[node name="FlipSide1" type="Area2D" parent="."]
+position = Vector2(0, -70)
+collision_layer = 2
+collision_mask = 2
+
+[node name="FlipSide1Inside" type="CollisionShape2D" parent="FlipSide1"]
+shape = SubResource("CircleShape2D_qwv10")
+
+[node name="FlipSide2" type="Area2D" parent="."]
+position = Vector2(0, -70)
+collision_layer = 2
+collision_mask = 2
+
+[node name="FlipSide2Inside" type="CollisionShape2D" parent="FlipSide2"]
+position = Vector2(0, 114)
+shape = SubResource("CircleShape2D_qwv10")

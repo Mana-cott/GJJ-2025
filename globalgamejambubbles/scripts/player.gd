@@ -1,30 +1,32 @@
 extends CharacterBody2D
 
-
-const SPEED = 300.0
+const SPEED = 600.0
 const JUMP_VELOCITY = -600.0
 
 var double_jumps_left = 1
 var face_right = true
+var should_be_facing_right = true
 var legs_face_right = true
-var look_position = Vector2.ZERO
+var mouse_position = Vector2.ZERO
 var speed = SPEED
+
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
 @onready var lower_body_sprite = $LowerBodySprite
 @onready var lower_body_collision_shape = $LowerBodyCollisionShape
+@export var Bullet: PackedScene
 
 func _physics_process(delta):
 	if Global.look_mode == "mouse":
-		look_position = get_global_mouse_position()
+		mouse_position = get_global_mouse_position()
 		# Look at mouse (if mouse mode toggled)
-		upper_body.look_at(look_position)#clamp(look_position, Vector2(0, 180), Vector2(180, 0)))
-		if look_position.x > -1:
-			upper_body.position.x *= -1
-			upper_body_sprite.flip_h = false
-		elif look_position.x < 1:
-			upper_body.position.x *= 1
-			upper_body_sprite.flip_h = true
+		upper_body.look_at(mouse_position)
+		# mouse facing left
+		if mouse_position.x > -1:
+			should_be_facing_right = false
+		# mouse facing right
+		elif mouse_position.x < 1:
+			should_be_facing_right = true
 	else:
 		if face_right:
 			upper_body_sprite.flip_h = false
@@ -44,6 +46,9 @@ func _physics_process(delta):
 			face_right = false
 		elif Input.is_action_pressed("look_right"):
 			face_right = true
+			
+	if Input.is_action_just_pressed("shoot_bullet"):
+		shoot_bullet()
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -55,10 +60,6 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and (is_on_floor() or double_jumps_left >=0):
 		double_jumps_left = double_jumps_left - 1
-		if double_jumps_left == -1:
-			var tween = get_tree().create_tween()
-			var tween_rotation_value = 6.28319 if legs_face_right else -6.28319 
-			tween.tween_property(self, "rotation", tween_rotation_value, 0.25)
 		velocity.y = JUMP_VELOCITY
 		print(double_jumps_left)
 
@@ -84,3 +85,8 @@ func _physics_process(delta):
 		lower_body_sprite.play("run")
 
 	move_and_slide()
+
+func shoot_bullet():
+	var bullet = Bullet.instantiate()
+	owner.add_child(bullet)
+	bullet.transform = $UpperBody/Muzzle.global_transform

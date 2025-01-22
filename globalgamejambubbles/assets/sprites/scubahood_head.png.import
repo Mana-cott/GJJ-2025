@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://25by6ry73lj"
-path="res://.godot/imported/scubahood_torso.png-0da15b23dcd2e013f8601592a375cd2e.ctex"
+uid="uid://310v7iuj8kq"
+path="res://.godot/imported/scubahood_head.png-5daff2a2fb7b53dd71c4ad867f057322.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/scubahood_torso.png"
-dest_files=["res://.godot/imported/scubahood_torso.png-0da15b23dcd2e013f8601592a375cd2e.ctex"]
+source_file="res://assets/sprites/scubahood_head.png"
+dest_files=["res://.godot/imported/scubahood_head.png-5daff2a2fb7b53dd71c4ad867f057322.ctex"]
 
 [params]
 
