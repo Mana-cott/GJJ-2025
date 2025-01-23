@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhwxydkih42re"
-path="res://.godot/imported/dangling_leg2.png-57009857a200e42c431b46f3d442734c.ctex"
+uid="uid://bg8c7m30kv2qf"
+path="res://.godot/imported/scubahood_legs_complete.png-58e7110bf1993e998d579ca5727e3047.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/dangling_leg2.png"
-dest_files=["res://.godot/imported/dangling_leg2.png-57009857a200e42c431b46f3d442734c.ctex"]
+source_file="res://assets/sprites/scubahood_legs_complete.png"
+dest_files=["res://.godot/imported/scubahood_legs_complete.png-58e7110bf1993e998d579ca5727e3047.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1qm80pd7ytie"
-path="res://.godot/imported/scubahood_torso_prototype.png-de8a3bef5b8bf2d94cd887809d37de2b.ctex"
+uid="uid://jg2vryan2uue"
+path="res://.godot/imported/reticle.png-334f2f08384b975197fb7316df4f22fc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/scubahood_torso_prototype.png"
-dest_files=["res://.godot/imported/scubahood_torso_prototype.png-de8a3bef5b8bf2d94cd887809d37de2b.ctex"]
+source_file="res://assets/sprites/reticle.png"
+dest_files=["res://.godot/imported/reticle.png-334f2f08384b975197fb7316df4f22fc.ctex"]
 
 [params]
 
