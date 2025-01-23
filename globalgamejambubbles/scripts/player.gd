@@ -4,11 +4,13 @@ const SPEED = 600.0
 const JUMP_VELOCITY = -600.0
 const SLIDE_SPEED = 1200.0
 const SLIDE_DURATION = 0.5
-const SHOOT_DURATION = 0.5
+const SHOOT_DURATION = 0.3
+const RELOAD_DURATION = 0.3
 const SLIDE_GRAVITY = 1500.0
 
 var double_jumps_left = 1
 var is_double_jumping = false
+var bullets_left = 6
 var face_right = true
 var should_be_facing_right = true
 var legs_face_right = true
@@ -17,6 +19,8 @@ var sliding = false
 var slide_timer = 0.0
 var shooting = false
 var shoot_timer = 0.0
+var reloading = false
+var reload_timer = 0.0
 
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
@@ -45,6 +49,12 @@ func _physics_process(delta):
 		else:
 			if upper_body_sprite.animation == "shoot" and upper_body_sprite.frame == 0:
 				shoot_bullet()
+				
+	# Handle reload.
+	if reloading:
+		reload_timer -= delta
+		if reload_timer <= 0:
+			reloading = false
 
 	# Handle Slide.
 	if sliding:
@@ -77,9 +87,8 @@ func _physics_process(delta):
 			double_jumps_left -= 1
 			is_double_jumping = true
 
-	# Handle movement
+	# Handle movement.
 	velocity.x = 0
-	
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1 * speed
 		lower_body_sprite.flip_h = false
@@ -91,9 +100,20 @@ func _physics_process(delta):
 		
 	# Trigger shoot.
 	if Input.is_action_just_pressed("shoot_bullet"):
-		shooting = true
-		shoot_timer = SHOOT_DURATION
-		upper_body_sprite.play("shoot")
+		if bullets_left > 0:
+			shooting = true
+			shoot_timer = SHOOT_DURATION
+			upper_body_sprite.play("shoot")
+			bullets_left -= 1
+			move_and_slide()
+			return
+			
+	# Trigger reload.
+	if Input.is_action_just_pressed("reload"):
+		bullets_left = 6
+		reloading = true
+		reload_timer = RELOAD_DURATION
+		upper_body_sprite.play("reload")
 		move_and_slide()
 		return
 		
@@ -111,10 +131,20 @@ func _physics_process(delta):
 	if not is_on_floor() and not is_double_jumping:
 		lower_body_sprite.play("jump")
 	elif velocity.x == 0 and is_on_floor():
-		upper_body_sprite.play("idle")
+		if shooting:
+			upper_body_sprite.play("shoot")
+		elif reloading:
+			upper_body_sprite.play("reload")
+		else:
+			upper_body_sprite.play("idle")
 		lower_body_sprite.play("idle")
 	elif velocity.x != 0 and is_on_floor():
-		upper_body_sprite.play("default")
+		if shooting:
+			upper_body_sprite.play("shoot")
+		elif reloading:
+			upper_body_sprite.play("reload")
+		else:
+			upper_body_sprite.play("default")
 		lower_body_sprite.play("run")
 
 	move_and_slide()
