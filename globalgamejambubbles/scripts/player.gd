@@ -120,7 +120,7 @@ func _physics_process(delta):
 # Create and shoot a bullet
 func shoot_bullet():
 	var bullet = bullet.instantiate()
-	bullet.dir = upper_body.rotation
+	bullet.dir = upper_body.rotation 
 	bullet.pos = $UpperBody/Muzzle.global_position
-	bullet.rot = $UpperBody/Muzzle.global_rotation
+	bullet.rot = $UpperBody/Muzzle.global_rotation 
 	get_tree().current_scene.add_child(bullet)

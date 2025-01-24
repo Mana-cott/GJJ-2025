@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y827y"]
 size = Vector2(25, 24)
 
-[node name="Bullet" type="CharacterBody2D"]
+[node name="Bullet" type="Area2D"]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_qicvy")
@@ -18,3 +18,11 @@ texture = ExtResource("1_jtird")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_y827y")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.037
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

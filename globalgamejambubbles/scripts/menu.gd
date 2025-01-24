@@ -1,6 +1,6 @@
 extends Control
 
-@onready var toggle_look_mode_button = $MarginContainer/VBoxContainer/ToggleLookMode
+@onready var toggle_look_mode_button = $MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,3 +23,11 @@ func _on_toggle_look_mode_pressed():
 
 func _on_play_pressed():
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
+
+
+func _on_option_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_quit_pressed() -> void:
+	get_tree().quit() # Replace with function body.
