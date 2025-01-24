@@ -1,31 +1,33 @@
-#extends CharacterBody2D
-
-extends Area2D
+extends CharacterBody2D
 
 const RICOCHET = 3;
-const DURATION = 1.0
 
 var pos:Vector2
 var rot:float
 var dir:float
 var speed = 1000
-
-@onready var timer = $Timer
+var ricochet
 
 
 func _ready():
 	global_position = pos
-	global_rotation = rot - ((2*PI)/4)
-	timer.set_wait_time(DURATION)
-	print(position)
+	global_rotation = rot #- ((2*PI)/4)
+	velocity = Vector2(speed,0).rotated(dir)
+	ricochet = RICOCHET
 
-	
+
 func _physics_process(delta):
-	position += transform.x * speed * delta
-	#velocity = Vector2(speed,0).rotated(dir)
-	speed -= (speed/100 +5)
-	#print(rot)
-	#move_and_slide()
+	
+	var collision = move_and_collide(velocity * delta)
+	if collision:
+		if ricochet > 0:
+			velocity = velocity.bounce(collision.get_normal())
+			ricochet -= 1
+		else:
+			disappear()
+	else:
+		velocity.x -= ((velocity.x/100 +5)/2.3)
+
 
 #maybe a little animation before deleted the bublle
 func disappear():
@@ -35,9 +37,4 @@ func disappear():
 
 func _on_timer_timeout() -> void:
 	#print("disappear")
-	disappear() # Replace with function body.
-
-
-func _on_body_entered(body: Node2D) -> void:
-	print(" rerere tk ")
-	disappear() # Replace with function body.
+	disappear()

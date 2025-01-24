@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_oqhaq"]
 [ext_resource type="Texture2D" uid="uid://bg8c7m30kv2qf" path="res://assets/sprites/scubahood_legs_complete.png" id="2_unhao"]
 [ext_resource type="Texture2D" uid="uid://dmjplskc8purj" path="res://assets/sprites/scubahood_torso_complete.png" id="3_f1mse"]
-[ext_resource type="PackedScene" uid="uid://b2v5l70r417xo" path="res://scenes/reticle.tscn" id="4_a5cmj"]
+[ext_resource type="PackedScene" path="res://scenes/reticle.tscn" id="4_a5cmj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7t8ce"]
 atlas = ExtResource("2_unhao")
