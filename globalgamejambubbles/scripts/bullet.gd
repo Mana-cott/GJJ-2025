@@ -26,7 +26,10 @@ func _physics_process(delta):
 		else:
 			disappear()
 	else:
-		velocity.x = (max(velocity.x -((velocity.x/100 +5)/2.3),0) )
+		if velocity.x > 0:
+			velocity.x = (max(velocity.x -((velocity.x/100 +5)/2.3),0) )
+		else:
+			velocity.x = (min(velocity.x +((abs(velocity.x/100) +5)/2.3),0) )
 		
 
 
