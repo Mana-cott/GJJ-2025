@@ -11,7 +11,7 @@ var ricochet
 
 func _ready():
 	global_position = pos
-	global_rotation = rot #- ((2*PI)/4)
+	global_rotation = rot 
 	velocity = Vector2(speed,0).rotated(dir)
 	ricochet = RICOCHET
 
@@ -26,7 +26,8 @@ func _physics_process(delta):
 		else:
 			disappear()
 	else:
-		velocity.x -= ((velocity.x/100 +5)/2.3)
+		velocity.x = (max(velocity.x -((velocity.x/100 +5)/2.3),0) )
+		
 
 
 #maybe a little animation before deleted the bublle
