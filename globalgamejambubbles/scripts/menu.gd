@@ -1,6 +1,8 @@
 extends Control
 
 @onready var toggle_look_mode_button = $MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode
+@onready var optionMenu = $Option_Menu 
+@onready var marginContainer = $MarginContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,8 +28,14 @@ func _on_play_pressed():
 
 
 func _on_option_pressed() -> void:
-	pass # Replace with function body.
+	optionMenu.set_visible(true)
+	marginContainer.set_visible(false)
 
 
 func _on_quit_pressed() -> void:
 	get_tree().quit() # Replace with function body.
+
+
+func _on_option_menu_cancel() -> void:
+	optionMenu.set_visible(false)
+	marginContainer.set_visible(true) # Replace with function body.

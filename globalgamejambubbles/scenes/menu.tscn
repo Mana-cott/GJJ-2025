@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dh3wy4ul4oqy8"]
+[gd_scene load_steps=4 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
+[ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_xniyu"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -76,7 +77,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Quit"
 
+[node name="Option_Menu" parent="." instance=ExtResource("2_xniyu")]
+visible = false
+layout_mode = 1
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode" to="." method="_on_toggle_look_mode_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Option" to="." method="_on_option_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="cancel" from="Option_Menu" to="." method="_on_option_menu_cancel"]
