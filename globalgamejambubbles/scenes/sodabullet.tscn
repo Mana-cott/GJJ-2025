@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bscknoi34ix7b"]
+
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_dqdg1"]
+[ext_resource type="Texture2D" uid="uid://dr4ka77238y1f" path="res://assets/sprites/soda_bubble.png" id="2_c2mwe"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oxabb"]
+radius = 8.0
+
+[node name="Bullet" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+script = ExtResource("1_dqdg1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_c2mwe")
+offset = Vector2(-0.5, 1.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_oxabb")
+one_way_collision_margin = 0.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
