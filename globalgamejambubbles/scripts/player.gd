@@ -27,6 +27,8 @@ var reload_timer = 0.0
 @onready var lower_body_sprite = $LowerBodySprite
 @onready var lower_body_collision_shape = $LowerBodyCollisionShape
 @onready var reticle = $Reticle
+@onready var HUD_bullet_left = $HUD/MarginContainer/HBoxContainer/VBoxContainer/bullet_Left
+@onready var label_state_ammo = $reload_message
 @onready var bullet = preload("res://scenes/bullet.tscn")
 
 func _physics_process(delta):
@@ -48,12 +50,14 @@ func _physics_process(delta):
 			shooting = false
 		else:
 			if upper_body_sprite.animation == "shoot" and upper_body_sprite.frame == 0:
+				HUD_bullet_left.set_text(str(bullets_left))
 				shoot_bullet()
 				
 	# Handle reload.
 	if reloading:
 		reload_timer -= delta
 		if reload_timer <= 0:
+			HUD_bullet_left.set_text(str(bullets_left))
 			reloading = false
 
 	# Handle Slide.
@@ -106,6 +110,8 @@ func _physics_process(delta):
 			upper_body_sprite.play("shoot")
 			bullets_left -= 1
 			move_and_slide()
+			if bullets_left <= 1:
+				display_state_ammo("RELOAD" , true)
 			return
 			
 	# Trigger reload.
@@ -115,6 +121,7 @@ func _physics_process(delta):
 		reload_timer = RELOAD_DURATION
 		upper_body_sprite.play("reload")
 		move_and_slide()
+		display_state_ammo("OK!!!" , false)
 		return
 		
 	# Trigger slide.
@@ -159,3 +166,17 @@ func shoot_bullet():
 	bullet.pos = $UpperBody/Muzzle.global_position
 	bullet.rot = $UpperBody/Muzzle.global_rotation 
 	get_tree().current_scene.add_child(bullet)
+
+func display_state_ammo(message:String , display:bool):
+	if display == true:
+		label_state_ammo.set_text(message)
+		label_state_ammo.set_visible(true)
+	else:
+		label_state_ammo.set_text("OK!!!")
+		await get_tree().create_timer(0.5).timeout
+		label_state_ammo.set_visible(false)
+
+
+
+		
+	
