@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dh3wy4ul4oqy8"]
+[gd_scene load_steps=3 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
-[ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_xniyu"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -43,14 +42,47 @@ theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("SystemFont_1eqlm")
 theme_override_font_sizes/font_size = 40
-text = "DEEP BLUE
-(INSERT TRUE TITLE)"
+text = "DEEP BLUE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 alignment = 1
+
+[node name="VBoxContainerWeaponSelector" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Weapon_Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_1eqlm")
+theme_override_font_sizes/font_size = 40
+text = "P1 Surrently Selected Bubble: Soap"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Soda" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Soda"
+
+[node name="Soap" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Soap
+"
+
+[node name="Gum" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Gum"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -62,27 +94,62 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "         Play         "
 
+[node name="Controls" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Option"
+
 [node name="ToggleLookMode" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
-text = "Arrow Keys"
+text = "Aim: Mouse"
 
 [node name="Option" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Option"
 
-[node name="Quit" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="VBoxContainerWeaponSelector2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Weapon_Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_1eqlm")
+theme_override_font_sizes/font_size = 40
+text = "P2 Surrently Selected Bubble: Soap"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Soda2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
-text = "Quit"
+text = "Soda"
 
-[node name="Option_Menu" parent="." instance=ExtResource("2_xniyu")]
-visible = false
-layout_mode = 1
+[node name="Soap2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Soap
+"
 
+[node name="Gum2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Gum"
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soda" to="." method="_on_soda_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soap" to="." method="_on_soap_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Gum" to="." method="_on_gum_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode" to="." method="_on_toggle_look_mode_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Option" to="." method="_on_option_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="cancel" from="Option_Menu" to="." method="_on_option_menu_cancel"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soda2" to="." method="_on_soda2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soap2" to="." method="_on_soap2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Gum2" to="." method="_on_gum2_pressed"]
