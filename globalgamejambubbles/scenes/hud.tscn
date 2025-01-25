@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cry5y32md5mej"]
+[gd_scene load_steps=4 format=3 uid="uid://cry5y32md5mej"]
 
 [ext_resource type="Script" path="res://scenes/hud.gd" id="1_mnmga"]
+[ext_resource type="Texture2D" uid="uid://fivsn240eesv" path="res://assets/sprites/head.png" id="2_152j0"]
+
+[sub_resource type="FontVariation" id="FontVariation_xjxuq"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_mnmga")
@@ -26,9 +29,46 @@ layout_mode = 2
 
 [node name="ammo_Left" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_xjxuq")
 text = "AMMO LEFT"
 
 [node name="bullet_Left" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_xjxuq")
 text = "6"
 horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(300, 50)
+layout_direction = 2
+offset_left = 94.0
+offset_top = 57.0
+offset_right = 396.0
+offset_bottom = 107.0
+size_flags_vertical = 8
+color = Color(0, 0, 0, 1)
+
+[node name="HP" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 46)
+layout_direction = 2
+offset_left = 94.0
+offset_top = 59.0
+offset_right = 394.0
+offset_bottom = 105.0
+size_flags_vertical = 8
+color = Color(1, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(200, 170)
+offset_right = 1112.0
+offset_bottom = 608.0
+scale = Vector2(0.146462, 0.195417)
+texture = ExtResource("2_152j0")

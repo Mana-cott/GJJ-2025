@@ -175,8 +175,3 @@ func display_state_ammo(message:String , display:bool):
 		label_state_ammo.set_text("OK!!!")
 		await get_tree().create_timer(0.5).timeout
 		label_state_ammo.set_visible(false)
-
-
-
-		
-	
