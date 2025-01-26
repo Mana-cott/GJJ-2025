@@ -497,21 +497,21 @@ region = Rect2(0, 192, 80, 64)
 atlas = ExtResource("3_kkl2o")
 region = Rect2(80, 192, 80, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_b6ofc"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pfmes"]
 atlas = ExtResource("3_kkl2o")
-region = Rect2(160, 64, 80, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_idfap"]
-atlas = ExtResource("3_kkl2o")
-region = Rect2(80, 64, 80, 64)
+region = Rect2(240, 0, 80, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y2kw5"]
 atlas = ExtResource("3_kkl2o")
 region = Rect2(0, 64, 80, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pfmes"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_idfap"]
 atlas = ExtResource("3_kkl2o")
-region = Rect2(240, 0, 80, 64)
+region = Rect2(80, 64, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6ofc"]
+atlas = ExtResource("3_kkl2o")
+region = Rect2(160, 64, 80, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_akcrq"]
 atlas = ExtResource("3_f1mse")
@@ -678,24 +678,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6k31l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qp3mj")
 }],
 "loop": false,
 "name": &"collosus_shoot",
 "speed": 16.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6k31l")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qp3mj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_e6tgl")
-}],
-"loop": true,
-"name": &"collosus_shoot_release",
-"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -755,48 +744,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_b6ofc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_idfap")
+"texture": SubResource("AtlasTexture_pfmes")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_y2kw5")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_pfmes")
+"texture": SubResource("AtlasTexture_idfap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6ofc")
 }],
 "loop": false,
 "name": &"dagon_shoot",
 "speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_y2kw5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pfmes")
-}],
-"loop": true,
-"name": &"dagon_shoot_hold",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_pfmes")
-}, {
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_idfap")
-}, {
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_b6ofc")
-}, {
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_j6lrh")
-}],
-"loop": true,
-"name": &"dagon_shoot_release",
-"speed": 5.0
 }, {
 "frames": [],
 "loop": true,
@@ -1371,7 +1332,7 @@ position = Vector2(0, -1)
 position = Vector2(1.78814e-07, -10)
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_vbhm7")
-animation = &"dagon_shoot_release"
+animation = &"load"
 offset = Vector2(2.5, 0)
 
 [node name="SignifierRayCast" type="RayCast2D" parent="UpperBody"]
@@ -1426,6 +1387,6 @@ metadata/_edit_use_anchors_ = true
 
 [node name="BubbleStates" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
-scale = Vector2(1.25, 1.25)
+scale = Vector2(0.609375, 0.609375)
 sprite_frames = SubResource("SpriteFrames_kjuga")
 animation = &"collosus_pop"
