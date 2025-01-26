@@ -1,8 +1,12 @@
 extends Node2D
 
 @onready var HUD = $HUD
+@onready var victory_screen = $HUD/victory_screen
 
 func game_end(id:int):
+	get_tree().paused = true
+	victory_screen.set_visible(true)
+	victory_screen.write_victory_message("Player" + str(id) + " won the game")
 	print("Player" , id, " won the game")
 
 # Called when you hit play.
@@ -36,3 +40,13 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+
+func _on_victory_screen_main_menu() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/menu.tscn")
+
+
+func _on_victory_screen_retry() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()

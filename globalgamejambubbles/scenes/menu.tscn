@@ -113,7 +113,7 @@ text = "Option"
 [node name="Quit" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
-text = "	Quita"
+text = "	Quit"
 
 [node name="VBoxContainerWeaponSelector2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
