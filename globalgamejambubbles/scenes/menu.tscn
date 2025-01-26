@@ -1,9 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dh3wy4ul4oqy8"]
+[gd_scene load_steps=8 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
 [ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_iov68"]
-[ext_resource type="PackedScene" uid="uid://bo8eajfo2o3tn" path="res://scenes/control_menu.tscn" id="3_2vke0"]
 [ext_resource type="Texture2D" uid="uid://dv7dsehkeje3i" path="res://assets/sprites/scubahood_icon.png" id="2_oehbm"]
+[ext_resource type="PackedScene" uid="uid://bo8eajfo2o3tn" path="res://scenes/control_menu.tscn" id="3_2vke0"]
 [ext_resource type="Texture2D" uid="uid://h2k2ox37wge1" path="res://assets/sprites/dagon_icon.png" id="3_c563x"]
 [ext_resource type="Texture2D" uid="uid://rwghshxuqlm3" path="res://assets/sprites/collosus_of_rhodes_icon.png" id="4_pdfg5"]
 
@@ -157,26 +157,20 @@ icon = ExtResource("4_pdfg5")
 visible = false
 layout_mode = 1
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Scubahood" to="." method="_on_scubahood_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Dagon" to="." method="_on_dagon_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/CollosusOfRhodes" to="." method="_on_collosus_of_rhodes_pressed"]
 [node name="Control_Menu" parent="." instance=ExtResource("3_2vke0")]
 visible = false
 layout_mode = 1
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soda" to="." method="_on_soda_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soap" to="." method="_on_soap_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Gum" to="." method="_on_gum_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Scubahood" to="." method="_on_scubahood_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Dagon" to="." method="_on_dagon_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/CollosusOfRhodes" to="." method="_on_collosus_of_rhodes_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode" to="." method="_on_toggle_look_mode_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Option" to="." method="_on_option_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Scubahood2" to="." method="_on_scubahood_2_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Dagon2" to="." method="_on_dagon_2_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/CollosusOfRhodes2" to="." method="_on_collosus_of_rhodes_2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soda2" to="." method="_on_soda2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soap2" to="." method="_on_soap2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Gum2" to="." method="_on_gum2_pressed"]
 [connection signal="cancel" from="Option_Menu" to="." method="_on_option_menu_cancel"]
 [connection signal="cancel" from="Control_Menu" to="." method="_on_control_menu_cancel"]
