@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=4 uid="uid://w288fuvdlvh2"]
+[gd_scene load_steps=7 format=4 uid="uid://w288fuvdlvh2"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_dnec3"]
 [ext_resource type="Texture2D" uid="uid://c0v7u6ik32ifs" path="res://assets/sprites/twilight-tiles.png" id="2_2mfmr"]
 [ext_resource type="PackedScene" uid="uid://cry5y32md5mej" path="res://scenes/hud.tscn" id="3_uxogs"]
+[ext_resource type="PackedScene" uid="uid://bqnwmbwut2a6u" path="res://scenes/victory_screen.tscn" id="4_2j2e4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hints"]
 texture = ExtResource("2_2mfmr")
@@ -29,3 +30,9 @@ tile_map_data = PackedByteArray("AAAjAAYAAAAHAAYAAAAiAAYAAAAHAAYAAAAhAAYAAAAHAAY
 tile_set = SubResource("TileSet_c3vnh")
 
 [node name="HUD" parent="." instance=ExtResource("3_uxogs")]
+
+[node name="victory_screen" parent="HUD" instance=ExtResource("4_2j2e4")]
+visible = false
+
+[connection signal="main_menu" from="HUD/victory_screen" to="." method="_on_victory_screen_main_menu"]
+[connection signal="retry" from="HUD/victory_screen" to="." method="_on_victory_screen_retry"]

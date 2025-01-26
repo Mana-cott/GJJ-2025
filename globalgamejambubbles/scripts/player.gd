@@ -16,7 +16,7 @@ const STATS_SODA = {
 	"CHARGEABLE": false}
 
 const BULLET_SODA = {
-	"DAMAGE": 10,
+	"DAMAGE": 25,
 	"RICOCHET": 1,
 	"BULLET_DURATION": 0.5, 
 	"BULLET_GRAVITY_MODIFIER": 0, 
@@ -43,7 +43,7 @@ const STATS_SOAP = {
 	"CHARGEABLE": false}
 
 const BULLET_SOAP = {
-	"DAMAGE": 10,
+	"DAMAGE": 100,
 	"RICOCHET": 3,
 	"BULLET_DURATION": 8, 
 	"BULLET_GRAVITY_MODIFIER": 0.5, 
@@ -70,7 +70,7 @@ const STATS_GUM = {
 	"CHARGEABLE": true}
 
 const BULLET_GUM = {
-	"DAMAGE": 10,
+	"DAMAGE": 300,
 	"RICOCHET": 3,
 	"BULLET_DURATION": 5, 
 	"BULLET_GRAVITY_MODIFIER": 1.0, 
@@ -84,10 +84,11 @@ const BULLET_GUM = {
 const COYOTE_LENIENCY = 0.2
 const BUBBLE_STATE_DURATION = 3.0 # 3 seconds
 
+signal defeat(id:int)
+
 var left_ground_counter = 0
 var double_jumps_left = 1
 var is_double_jumping = false
-var bullets_left = 6
 var face_right = true
 var should_be_facing_right = true
 var legs_face_right = true
@@ -117,6 +118,8 @@ var current_health = player_stats["HEALTH"]
 var regen_timer = 0
 #Charged shot charge timer
 var charge_timer = 0
+# Player current ammo, set to MAX_AMMO
+var bullets_left = player_stats["MAX_AMMO"]
 
 
 @onready var upper_body = $UpperBody
@@ -177,6 +180,10 @@ func _ready():
 		
 	# Hide bubble state
 	bubble_state.visible = false
+	
+	current_health = player_stats["HEALTH"]
+	bullets_left = player_stats["MAX_AMMO"]
+
 
 func _physics_process(delta):
 	
@@ -340,6 +347,11 @@ func _physics_process(delta):
 	# Trigger bubblestate.
 	# Use same as slide logic or something
 
+	# Handle HP and bubbling
+	if current_health <= 0: 
+		defeat.emit(player_nb)
+		current_health = player_stats["HEALTH"]
+	
 	# Handle animations.
 	if not is_on_floor() and not is_double_jumping:
 		lower_body_sprite.play(character_selected + "_jump")
