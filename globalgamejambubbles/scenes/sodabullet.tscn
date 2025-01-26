@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://dr4ka77238y1f" path="res://assets/sprites/soda_bubble.png" id="2_c2mwe"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxabb"]
-radius = 8.0
 
 [node name="Bullet" type="CharacterBody2D"]
 collision_layer = 4
@@ -13,6 +12,7 @@ motion_mode = 1
 script = ExtResource("1_dqdg1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("2_c2mwe")
 offset = Vector2(-0.5, 1.25)
 

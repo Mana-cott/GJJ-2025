@@ -1,14 +1,16 @@
 extends CharacterBody2D
+class_name Bullet
+
 
 var stats_bullet = {
-	"DAMAGE": 10,
-	"RICOCHET": 3,
-	"BULLET_DURATION": 5, 
-	"BULLET_GRAVITY_MODIFIER": 1, 
-	"BULLET_SPEED": 500, 
-	"BULLET_DECCEL_MODIFIER": 1,
-	"BULLET_INERTIA": 1,
-	"BULLET_IFRAME_DURATION": 0.5,
+	"DAMAGE": 0,
+	"RICOCHET": 0,
+	"BULLET_DURATION": 0, 
+	"BULLET_GRAVITY_MODIFIER": 0, 
+	"BULLET_SPEED": 0, 
+	"BULLET_DECCEL_MODIFIER": 0,
+	"BULLET_INERTIA": 0,
+	"BULLET_IFRAME_DURATION": 0,
 	"FRAGILE_BOUNCE": false,
 	"CAN_SHOOTER_BOUNCE": false}
 
@@ -16,25 +18,25 @@ var pos:Vector2
 var rot:float
 var dir:float
 var oldBub = false
+var has_dealt_damage = false
 var ricochetCount = 0
 var shooter = 0
+var charge_boost = 0
 
 @onready var timer = $Timer
 
 func _ready():
 	global_position = pos
 	global_rotation = rot #- ((2*PI)/4)
-	velocity = Vector2(stats_bullet["BULLET_SPEED"], 0).rotated(dir)
+	velocity = Vector2( (stats_bullet["BULLET_SPEED"] + 5*charge_boost ), 0).rotated(dir)
 	ricochetCount = stats_bullet["RICOCHET"]
 	timer.start(stats_bullet["BULLET_DURATION"])
 
 func _on_player_hit(playerHit:Node2D, playerShooter:int):
-	if playerHit.player_nb == playerShooter:
-		# Do nothing
-		print("Hit self")
-	else:
-		# Do damage signal???
-		print("Hit target!")
+	if playerHit.player_nb != playerShooter:
+		if has_dealt_damage == false:
+			Global.on_damage.emit(self)
+			has_dealt_damage = true
 
 func _physics_process(delta):
 	
@@ -64,7 +66,6 @@ func _physics_process(delta):
 		elif collision.get_collider().get_collision_layer_value(2):
 			#Checks whether player is the one who shot the bubble
 			_on_player_hit(collision.get_collider(), shooter)
-			print(oldBub)
 			#Bubble pops either way
 			if oldBub == true:
 				if stats_bullet["CAN_SHOOTER_BOUNCE"] && collision.get_collider().player_nb == shooter:
