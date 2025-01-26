@@ -24,12 +24,19 @@ var soda_health_color = Color(1.0,0.49,0.22,0.20)
 var soap_health_color = Color(1.0,0.87,0.88,0.91)
 var gum_health_color = Color(1.0,0.41, 0.71, 1)
 
-
+var Player1
+var Player2 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
+
+func set_player(player : CharacterBody2D , nb_player : int ):
+	if( nb_player==1 ):
+		Player1 = player
+	elif( nb_player==2 ):
+		Player2 = player
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -41,6 +48,7 @@ func display_HUD_player(Player : CharacterBody2D):
 		if(p1_Hp.get("visible") == false):
 			p1_Hp.set("visible", true) 
 			p1_ammo.set_visible(true)
+			black_bar1.set_size(Vector2( Player.player_stats["HEALTH"] +2 ,black_bar1.get_size().y))
 			match Player.character_selected:
 				"dagon":
 					health_bar2.set_color(soda_health_color)
@@ -51,12 +59,13 @@ func display_HUD_player(Player : CharacterBody2D):
 		else:
 			p2_Hp.set("visible", true) 
 			p2_ammo.set_visible(true)
+			black_bar2.set_size(Vector2( Player.player_stats["HEALTH"] +2 ,black_bar2.get_size().y))
 			match Player.character_selected:
-				"soda":
+				"dagon":
 					health_bar1.set_color(soda_health_color)
-				"soap":
+				"scubahood":
 					health_bar1.set_color(soap_health_color)
-				"gum":
+				"collosus":
 					health_bar1.set_color(gum_health_color)
 
 func change_ammo_left(ammo_left : int , player:int):
