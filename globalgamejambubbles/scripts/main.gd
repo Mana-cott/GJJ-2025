@@ -20,7 +20,6 @@ func _ready() -> void:
 	# Instantiate player 1
 	var p1 = player_scene.instantiate()
 	p1.player_nb = 1
-	p1.weapon_type = Global.weapon_type_p1
 	p1.init_pos = Vector2(-200, 0)
 	p1.player_scale = Vector2(3, 3)
 	get_tree().current_scene.add_child(p1)
@@ -30,11 +29,11 @@ func _ready() -> void:
 	# Instantiate player 2
 	var p2 = player_scene.instantiate()
 	p2.player_nb = 2
-	p2.weapon_type = Global.weapon_type_p2
 	p2.init_pos = Vector2(200, 0)
 	p2.player_scale = Vector2(3, 3)	
 	get_tree().current_scene.add_child(p2)
 	HUD.display_HUD_player(p2)
+
 	p2.defeat.connect(game_end)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

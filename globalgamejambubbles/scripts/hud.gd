@@ -38,26 +38,26 @@ func display_HUD_player(Player : CharacterBody2D):
 		if(p1_Hp.get("visible") == false):
 			p1_Hp.set("visible", true) 
 			p1_ammo.set_visible(true)
-			match Player.weapon_type:
-				"soda":
-					print("soda")
-					health_bar2.set_color(soda_health_color)
-				"soap":
-					health_bar2.set_color(soap_health_color)
-				"gum":
-					health_bar2.set_color(gum_health_color)
-			print("apres soda")
+			#match Player.character_selected:
+				#"dagon":
+				#	print("soda")
+				#	health_bar2.set_color(soda_health_color)
+				#"scubahood":
+				#	health_bar2.set_color(soap_health_color)
+				#"collosus":
+				#	health_bar2.set_color(gum_health_color)
+			#print("apres soda")
 		else:
 			p2_Hp.set("visible", true) 
 			p2_ammo.set_visible(true)
-			match Player.weapon_type:
-				"soda":
-					print("soda")
-					health_bar1.set_color(soda_health_color)
-				"soap":
-					health_bar1.set_color(soap_health_color)
-				"gum":
-					health_bar1.set_color(gum_health_color)
+			#match Player.character_selected:
+				#"soda":
+				#	print("soda")
+				#	health_bar1.set_color(soda_health_color)
+				#"soap":
+				#	health_bar1.set_color(soap_health_color)
+				#"gum":
+				#	health_bar1.set_color(gum_health_color)
 
 func change_ammo_left(ammo_left : int , player:int):
 	if player == 1:

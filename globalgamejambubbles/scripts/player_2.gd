@@ -1,3 +1,5 @@
+# same as player 1 but uses gamepad inputs
+
 extends CharacterBody2D
 
 # Stats for Soda bubble
@@ -16,7 +18,7 @@ const STATS_SODA = {
 	"CHARGEABLE": false}
 
 const BULLET_SODA = {
-	"DAMAGE": 25,
+	"DAMAGE": 10,
 	"RICOCHET": 1,
 	"BULLET_DURATION": 0.5, 
 	"BULLET_GRAVITY_MODIFIER": 0, 
@@ -43,7 +45,7 @@ const STATS_SOAP = {
 	"CHARGEABLE": false}
 
 const BULLET_SOAP = {
-	"DAMAGE": 100,
+	"DAMAGE": 10,
 	"RICOCHET": 3,
 	"BULLET_DURATION": 8, 
 	"BULLET_GRAVITY_MODIFIER": 0.5, 
@@ -70,7 +72,7 @@ const STATS_GUM = {
 	"CHARGEABLE": true}
 
 const BULLET_GUM = {
-	"DAMAGE": 300,
+	"DAMAGE": 10,
 	"RICOCHET": 3,
 	"BULLET_DURATION": 5, 
 	"BULLET_GRAVITY_MODIFIER": 1.0, 
@@ -82,13 +84,11 @@ const BULLET_GUM = {
 	"CAN_SHOOTER_BOUNCE": true}
 
 const COYOTE_LENIENCY = 0.2
-const BUBBLE_STATE_DURATION = 3.0 # 3 seconds
-
-signal defeat(id:int)
 
 var left_ground_counter = 0
 var double_jumps_left = 1
 var is_double_jumping = false
+var bullets_left = 6
 var face_right = true
 var should_be_facing_right = true
 var legs_face_right = true
@@ -99,12 +99,12 @@ var shoot_cooldown = 0
 var shoot_animation_timer = 0.0
 var reloading = false
 var reload_timer = 0.0
-var is_bubbled = false
-var bubble_timer = 0.0
 
 # Local var for character selected
 var character_selected = "scubahood"
-# Local var for character selected
+# Local var for selected weapon type
+var weapon_type = "soda"
+# Local var for identifying which player character
 var player_nb = 1
 # Local dictionary var for selected weapon type stats
 var player_stats = STATS_SODA
@@ -114,13 +114,6 @@ var init_pos = Vector2(0, 0)
 var player_scale = Vector2(0, 0)
 # Player "stance"/HP meter
 var current_health = player_stats["HEALTH"]
-# Timer after damage for health regen
-var regen_timer = 0
-#Charged shot charge timer
-var charge_timer = 0
-# Player current ammo, set to MAX_AMMO
-var bullets_left = player_stats["MAX_AMMO"]
-
 
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
@@ -134,36 +127,20 @@ var bullets_left = player_stats["MAX_AMMO"]
 @onready var soda_bullet = preload("res://scenes/sodabullet.tscn")
 @onready var label_state_ammo = $reload_message
 @onready var middle_body_part = $Sprite2D
-@onready var bubble_state = $BubbleStates
 
 func _ready():
-	# Set reticle inputs
-	reticle.player_nb = player_nb
-	# Character select in effect *mad rhymes
-	if player_nb == 1:
-		match Global.character_p1:
-			"scubahood":
-				character_selected = "scubahood"
-				middle_body_part.texture = load("res://assets/sprites/body_blocker.png")
-			"dagon":
-				character_selected = "dagon"
-				middle_body_part.texture = load("res://assets/sprites/dagon_body_blocker.png")
-			"collosus":
-				character_selected = "collosus"
-				middle_body_part.texture = load("res://assets/sprites/collosus_body_blocker.png")
-	else:
-		match Global.character_p2:
-			"scubahood":
-				character_selected = "scubahood"
-				middle_body_part.texture = load("res://assets/sprites/body_blocker.png")
-			"dagon":
-				character_selected = "dagon"
-				middle_body_part.texture = load("res://assets/sprites/dagon_body_blocker.png")
-			"collosus":
-				character_selected = "collosus"
-				middle_body_part.texture = load("res://assets/sprites/collosus_body_blocker.png")
-
-	
+	#Character select in effect *mad rhymes
+	match Global.character_p2:
+		"scubahood":
+			character_selected = "scubahood"
+			middle_body_part.texture = load("res://assets/sprites/body_blocker.png")
+		"dagon":
+			character_selected = "dagon"
+			middle_body_part.texture = load("res://assets/sprites/dagon_body_blocker.png")
+		"collosus":
+			character_selected = "collosus"
+			middle_body_part.texture = load("res://assets/sprites/collosus_body_blocker.png")
+			
 	#Sets initial position, size
 	global_position = init_pos
 	scale = player_scale
@@ -171,28 +148,14 @@ func _ready():
 	Global.connect("on_damage", damage_function)
 	
 	#Gives stats based on selected weapon
-	if character_selected == "scubahood":
+	if weapon_type == "soda":
 		player_stats = STATS_SODA
-	elif character_selected == "dagon":
+	elif weapon_type == "soap":
 		player_stats = STATS_SOAP
 	else:
 		player_stats = STATS_GUM
-		
-	# Hide bubble state
-	bubble_state.visible = false
-	
-	current_health = player_stats["HEALTH"]
-	bullets_left = player_stats["MAX_AMMO"]
-
 
 func _physics_process(delta):
-	
-	# Handles natural health regen
-	regen_timer += 1
-	if regen_timer >= 30:
-		if current_health < player_stats["HEALTH"]:
-			current_health += 1
-	
 	# Handle reticle
 	face_right = reticle.global_position.x > global_position.x
 	if face_right:
@@ -232,7 +195,7 @@ func _physics_process(delta):
 		is_double_jumping = false
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump" + str(player_nb)):
+	if Input.is_action_just_pressed("jump_p2"):
 		if is_on_floor() || left_ground_counter <= COYOTE_LENIENCY:
 			lower_body_sprite.play(character_selected + "_jump")
 			velocity.y = player_stats["JUMP_VELOCITY"]
@@ -245,11 +208,11 @@ func _physics_process(delta):
 
 	# Handle movement.
 	velocity.x = 0
-	if Input.is_action_pressed("move_right"+str(player_nb)):
+	if Input.is_action_pressed("move_right_p2"):
 		velocity.x += 1 * player_stats["SPEED"]
 		lower_body_sprite.flip_h = false
 		legs_face_right = true
-	if Input.is_action_pressed("move_left"+str(player_nb)):
+	if Input.is_action_pressed("move_left_p2"):
 		velocity.x -= 1 * player_stats["SPEED"]
 		lower_body_sprite.flip_h = true
 		legs_face_right = false
@@ -258,62 +221,24 @@ func _physics_process(delta):
 	if(shoot_cooldown > 0):
 		shoot_cooldown -= delta
 
-# HANDLES CHARGED FIRE (GUM)
-	if player_stats["CHARGEABLE"] == true:
-		if Input.is_action_pressed("shoot_bullet"+str(player_nb)):
-			if bullets_left > 0 && shoot_cooldown <= 0:
-				charge_timer += 1
-		else: 
-			if charge_timer >= 10:
-				bullets_left -= 1
-				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"] + charge_timer
-				shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
-				charge_timer = 0
-				#upper_body_sprite.play("shoot")
-				shoot_bullet(charge_timer)
-				move_and_slide()
-				if bullets_left <= 1:
-					display_state_ammo("RELOAD" , true)
-				return
-			else: 
-				charge_timer = 0
-
-
-# HANDLES AUTO FIRE (SODA)
-	elif player_stats["FULL_AUTO"] == true:
-		if Input.is_action_pressed("shoot_bullet"+str(player_nb)):
-			if bullets_left > 0 && shoot_cooldown <= 0:
-				bullets_left -= 1
-				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
-				shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
-				#upper_body_sprite.play("shoot")
-				shoot_bullet(charge_timer)
-				move_and_slide()
-				if bullets_left <= 1:
-					display_state_ammo("RELOAD" , true)
-				return
-
-
-# HANDLE SEMI-AUTO (SOAP)
-	else: 
-		if Input.is_action_just_pressed("shoot_bullet"+str(player_nb)):
-			if bullets_left > 0 && shoot_cooldown <= 0:
-				bullets_left -= 1
-				#HUD_bullet_left.set_text(str(bullets_left))
-				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
-				shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
-				#upper_body_sprite.play("shoot")
-				shoot_bullet(0)
-				move_and_slide()
-				if bullets_left <= 1:
-					display_state_ammo("RELOAD" , true)
-				return
-
-
 	# Trigger & Handle shoot.
+	if Input.is_action_just_pressed("shoot_bullet_p2"):
+		# ADD INTERACTIONS FOR HOLDING DOWN SHOOT BUTTON (FULL AUTO/CHARGEABLE)
+		
+		if bullets_left > 0 && shoot_cooldown <= 0:
+			bullets_left -= 1
+			#HUD_bullet_left.set_text(str(bullets_left))
+			shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
+			shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
+			#upper_body_sprite.play("shoot")
+			shoot_bullet()
+			move_and_slide()			
+			if bullets_left <= 1:
+				display_state_ammo("RELOAD" , true)
+			return
 			
 	# Trigger reload.
-	if Input.is_action_just_pressed("reload"+str(player_nb)):
+	if Input.is_action_just_pressed("reload_p2"):
 		bullets_left = player_stats["MAX_AMMO"]
 		reloading = true
 		reload_timer = player_stats["RELOAD_DURATION"]
@@ -323,7 +248,7 @@ func _physics_process(delta):
 		return
 		
 	# Trigger slide.
-	if Input.is_action_just_pressed("slide"+str(player_nb)) and velocity.x != 0 and is_on_floor():
+	if Input.is_action_just_pressed("crouch_p2") and velocity.x != 0 and is_on_floor():
 		sliding = true
 		slide_timer = player_stats["SLIDE_DURATION"]
 		lower_body_collision_shape.disabled = true
@@ -331,27 +256,7 @@ func _physics_process(delta):
 		velocity.x = player_stats["SLIDE_SPEED"] * (1 if face_right else -1)
 		move_and_slide()
 		return
-	
-	# Handle bubble state.
-	# unfinished!!!
-	if is_bubbled:
-		bubble_timer -= delta
-		if bubble_timer <= 0:
-			sliding = false
-			lower_body_collision_shape.disabled = false
-		else:
-			velocity = Vector2.ZERO
-			move_and_slide()
-			return
-			
-	# Trigger bubblestate.
-	# Use same as slide logic or something
-
-	# Handle HP and bubbling
-	if current_health <= 0: 
-		defeat.emit(player_nb)
-		current_health = player_stats["HEALTH"]
-	
+		
 	# Handle animations.
 	if not is_on_floor() and not is_double_jumping:
 		lower_body_sprite.play(character_selected + "_jump")
@@ -379,28 +284,24 @@ func _physics_process(delta):
 # Handles player taking damage
 func damage_function(dmg_source:Bullet):
 	if dmg_source.shooter != player_nb:
-		current_health -= (dmg_source.stats_bullet["DAMAGE"] + dmg_source.charge_boost)
-		regen_timer = 0
+		current_health -= dmg_source.stats_bullet["DAMAGE"]
 		print(current_health)
-		if current_health <= 0:
-			# Bubble state in effect
-			bubble_state = true
+
 
 # Create and shoot a bullet
-func shoot_bullet(charge:int):
+func shoot_bullet():
 	var bullet
 	
 	# DETERMINES STATS OF BULLETS && WHICH TO FIRE
-	if character_selected == "dagon":
+	if weapon_type == "soda":
 		bullet = soda_bullet.instantiate()
 		bullet.stats_bullet = BULLET_SODA
-	elif character_selected == "scubahood":
+	elif weapon_type == "soap":
 		bullet = soap_bullet.instantiate()
 		bullet.stats_bullet = BULLET_SOAP
 	else:
 		bullet = gum_bullet.instantiate()
 		bullet.stats_bullet = BULLET_GUM
-		bullet.charge_boost += charge
 	
 	var bullet_angle_vec = Vector2((reticle.global_position.x - muzzle.global_position.x), (reticle.global_position.y - muzzle.global_position.y))
 	var bullet_direction = bullet_angle_vec.angle()
