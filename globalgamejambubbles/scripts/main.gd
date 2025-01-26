@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var HUD = $HUD
+
 # Called when you hit play.
 func _ready() -> void:
 	# Randomly select and instantiate stage
@@ -15,6 +17,8 @@ func _ready() -> void:
 	p1.init_pos = Vector2(-200, 0)
 	p1.player_scale = Vector2(3, 3)
 	get_tree().current_scene.add_child(p1)
+	
+	
 	
 	# Instantiate player 2
 	var p2 = player_scene.instantiate()

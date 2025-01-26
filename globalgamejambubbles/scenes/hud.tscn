@@ -22,12 +22,13 @@ theme_override_constants/margin_bottom = 20
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 8
-alignment = 2
+alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="Ammo_P1" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 
-[node name="ammo_Left" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ammo_Left" type="Label" parent="MarginContainer/HBoxContainer/Ammo_P1"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
@@ -36,7 +37,7 @@ theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("FontVariation_xjxuq")
 text = "AMMO LEFT"
 
-[node name="bullet_Left" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="bullet_Left" type="Label" parent="MarginContainer/HBoxContainer/Ammo_P1"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
@@ -46,7 +47,42 @@ theme_override_fonts/font = SubResource("FontVariation_xjxuq")
 text = "6"
 horizontal_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 1500
+
+[node name="Ammo_P2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="ammo_Left" type="Label" parent="MarginContainer/HBoxContainer/Ammo_P2"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_xjxuq")
+text = "AMMO LEFT"
+
+[node name="bullet_Left" type="Label" parent="MarginContainer/HBoxContainer/Ammo_P2"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_xjxuq")
+text = "6"
+horizontal_alignment = 1
+
+[node name="HP1" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="black_bar" type="ColorRect" parent="HP1"]
 custom_minimum_size = Vector2(300, 50)
 layout_direction = 2
 offset_left = 94.0
@@ -56,7 +92,7 @@ offset_bottom = 107.0
 size_flags_vertical = 8
 color = Color(0, 0, 0, 1)
 
-[node name="HP" type="ColorRect" parent="."]
+[node name="HP" type="ColorRect" parent="HP1"]
 custom_minimum_size = Vector2(0, 46)
 layout_direction = 2
 offset_left = 94.0
@@ -66,9 +102,48 @@ offset_bottom = 105.0
 size_flags_vertical = 8
 color = Color(1, 0, 0, 1)
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="HP1"]
 custom_minimum_size = Vector2(200, 170)
 offset_right = 1112.0
 offset_bottom = 608.0
 scale = Vector2(0.146462, 0.195417)
 texture = ExtResource("2_152j0")
+
+[node name="HP2" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="black_bar" type="ColorRect" parent="HP2"]
+custom_minimum_size = Vector2(300, 50)
+layout_direction = 2
+offset_left = -364.0
+offset_top = 59.0
+offset_right = -62.0
+offset_bottom = 109.0
+size_flags_vertical = 8
+color = Color(0, 0, 0, 1)
+
+[node name="HP" type="ColorRect" parent="HP2"]
+custom_minimum_size = Vector2(0, 46)
+layout_direction = 2
+offset_left = -362.0
+offset_top = 61.0
+offset_right = -62.0
+offset_bottom = 107.0
+size_flags_vertical = 8
+color = Color(1, 0, 0, 1)
+
+[node name="TextureRect2" type="TextureRect" parent="HP2"]
+custom_minimum_size = Vector2(200, 170)
+offset_left = -124.0
+offset_right = 988.0
+offset_bottom = 608.0
+scale = Vector2(0.146462, 0.195417)
+texture = ExtResource("2_152j0")
+flip_h = true

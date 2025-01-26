@@ -119,13 +119,13 @@ var player_scale = Vector2(0, 0)
 @onready var soap_bullet = preload("res://scenes/soapbullet.tscn")
 @onready var gum_bullet = preload("res://scenes/gumbullet.tscn")
 @onready var soda_bullet = preload("res://scenes/sodabullet.tscn")
-@onready var HUD_bullet_left = $HUD/MarginContainer/HBoxContainer/VBoxContainer/bullet_Left
 @onready var label_state_ammo = $reload_message
 
 func _ready():
 	#Sets initial position, size
 	global_position = init_pos
 	scale = player_scale
+	
 	
 	#Gives stats based on selected weapon
 	if weapon_type == "soda":
@@ -207,7 +207,7 @@ func _physics_process(delta):
 		
 		if bullets_left > 0 && shoot_cooldown <= 0:
 			bullets_left -= 1
-			HUD_bullet_left.set_text(str(bullets_left))
+			#HUD_bullet_left.set_text(str(bullets_left))
 			shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
 			shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
 			#upper_body_sprite.play("shoot")
@@ -284,7 +284,7 @@ func shoot_bullet():
 	bullet.shooter = player_nb
 	get_tree().current_scene.add_child(bullet)
 
-	func display_state_ammo(message:String , display:bool):
+func display_state_ammo(message:String , display:bool):
 	if display == true:
 		label_state_ammo.set_text(message)
 		label_state_ammo.set_visible(true)
