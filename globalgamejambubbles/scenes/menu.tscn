@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dh3wy4ul4oqy8"]
+[gd_scene load_steps=4 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
+[ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_xniyu"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -97,7 +98,7 @@ text = "         Play         "
 [node name="Controls" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
-text = "Option"
+text = "Controls"
 
 [node name="ToggleLookMode" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -143,6 +144,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Gum"
 
+[node name="Option_Menu" parent="." instance=ExtResource("2_xniyu")]
+visible = false
+layout_mode = 1
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soda" to="." method="_on_soda_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soap" to="." method="_on_soap_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Gum" to="." method="_on_gum_pressed"]
@@ -153,3 +158,4 @@ text = "Gum"
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soda2" to="." method="_on_soda2_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soap2" to="." method="_on_soap2_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Gum2" to="." method="_on_gum2_pressed"]
+[connection signal="cancel" from="Option_Menu" to="." method="_on_option_menu_cancel"]

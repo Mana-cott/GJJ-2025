@@ -31,11 +31,11 @@ func _process(delta: float) -> void:
 #must show health bar if player are there
 func display_HUD_player(Player : CharacterBody2D):
 	if(Player != null):
-		if(p1_Hp.get_visible() == false):
-			p1_Hp.set_visible(true) 
+		if(p1_Hp.get("visible") == false):
+			p1_Hp.set("visible",true)
 			p1_ammo.set_visible(true)
 		else:
-			p2_Hp.set_visible(true) 
+			p2_Hp.set("visible",true) 
 			p2_ammo.set_visible(true)
 	
 
