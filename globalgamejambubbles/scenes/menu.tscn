@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
-[ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_xniyu"]
+[ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_iov68"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -144,7 +144,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Gum"
 
-[node name="Option_Menu" parent="." instance=ExtResource("2_xniyu")]
+[node name="Option_Menu" parent="." instance=ExtResource("2_iov68")]
 visible = false
 layout_mode = 1
 

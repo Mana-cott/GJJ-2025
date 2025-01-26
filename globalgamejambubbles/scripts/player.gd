@@ -16,7 +16,7 @@ const STATS_SODA = {
 	"CHARGEABLE": false}
 
 const BULLET_SODA = {
-	"DAMAGE": 10,
+	"DAMAGE": 25,
 	"RICOCHET": 1,
 	"BULLET_DURATION": 0.5, 
 	"BULLET_GRAVITY_MODIFIER": 0, 
@@ -43,7 +43,7 @@ const STATS_SOAP = {
 	"CHARGEABLE": false}
 
 const BULLET_SOAP = {
-	"DAMAGE": 10,
+	"DAMAGE": 100,
 	"RICOCHET": 3,
 	"BULLET_DURATION": 8, 
 	"BULLET_GRAVITY_MODIFIER": 0.5, 
@@ -70,7 +70,7 @@ const STATS_GUM = {
 	"CHARGEABLE": true}
 
 const BULLET_GUM = {
-	"DAMAGE": 10,
+	"DAMAGE": 300,
 	"RICOCHET": 3,
 	"BULLET_DURATION": 5, 
 	"BULLET_GRAVITY_MODIFIER": 1.0, 
@@ -83,10 +83,11 @@ const BULLET_GUM = {
 
 const COYOTE_LENIENCY = 0.2
 
+signal defeat(id:int)
+
 var left_ground_counter = 0
 var double_jumps_left = 1
 var is_double_jumping = false
-var bullets_left = 6
 var face_right = true
 var should_be_facing_right = true
 var legs_face_right = true
@@ -108,6 +109,11 @@ var player_stats = STATS_SODA
 var init_pos = Vector2(0, 0)
 # Player scaling multiplier
 var player_scale = Vector2(0, 0)
+# Player "stance"/HP meter
+var current_health = player_stats["HEALTH"]
+# Player current ammo, set to MAX_AMMO
+var bullets_left = player_stats["MAX_AMMO"]
+
 
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
@@ -126,6 +132,7 @@ func _ready():
 	global_position = init_pos
 	scale = player_scale
 	
+	Global.connect("on_damage", damage_function)
 	
 	#Gives stats based on selected weapon
 	if weapon_type == "soda":
@@ -134,6 +141,10 @@ func _ready():
 		player_stats = STATS_SOAP
 	else:
 		player_stats = STATS_GUM
+	
+	current_health = player_stats["HEALTH"]
+	bullets_left = player_stats["MAX_AMMO"]
+
 
 func _physics_process(delta):
 	# Handle reticle
@@ -236,7 +247,12 @@ func _physics_process(delta):
 		velocity.x = player_stats["SLIDE_SPEED"] * (1 if face_right else -1)
 		move_and_slide()
 		return
-		
+	
+	# Handle HP and bubbling
+	if current_health <= 0: 
+		defeat.emit(player_nb)
+		current_health = player_stats["HEALTH"]
+	
 	# Handle animations.
 	if not is_on_floor() and not is_double_jumping:
 		lower_body_sprite.play("jump")
@@ -260,6 +276,13 @@ func _physics_process(delta):
 		lower_body_sprite.play("run")
 
 	move_and_slide()
+
+# Handles player taking damage
+func damage_function(dmg_source:Bullet):
+	if dmg_source.shooter != player_nb:
+		current_health -= dmg_source.stats_bullet["DAMAGE"]
+		print(current_health)
+
 
 # Create and shoot a bullet
 func shoot_bullet():

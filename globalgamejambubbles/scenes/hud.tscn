@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cry5y32md5mej"]
 
-[ext_resource type="Script" path="res://scenes/hud.gd" id="1_mnmga"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_mnmga"]
 [ext_resource type="Texture2D" uid="uid://fivsn240eesv" path="res://assets/sprites/head.png" id="2_152j0"]
 
 [sub_resource type="FontVariation" id="FontVariation_xjxuq"]
@@ -84,6 +84,7 @@ offset_bottom = 40.0
 [node name="black_bar" type="ColorRect" parent="HP1"]
 custom_minimum_size = Vector2(300, 50)
 layout_direction = 2
+layout_mode = 0
 offset_left = 94.0
 offset_top = 57.0
 offset_right = 396.0
@@ -94,6 +95,7 @@ color = Color(0, 0, 0, 1)
 [node name="HP" type="ColorRect" parent="HP1"]
 custom_minimum_size = Vector2(0, 46)
 layout_direction = 2
+layout_mode = 0
 offset_left = 94.0
 offset_top = 59.0
 offset_right = 394.0
@@ -103,6 +105,7 @@ color = Color(1, 0, 0, 1)
 
 [node name="TextureRect" type="TextureRect" parent="HP1"]
 custom_minimum_size = Vector2(200, 170)
+layout_mode = 0
 offset_right = 1112.0
 offset_bottom = 608.0
 scale = Vector2(0.146462, 0.195417)
@@ -121,6 +124,7 @@ grow_horizontal = 0
 [node name="black_bar" type="ColorRect" parent="HP2"]
 custom_minimum_size = Vector2(300, 50)
 layout_direction = 2
+layout_mode = 0
 offset_left = -364.0
 offset_top = 59.0
 offset_right = -62.0
@@ -131,6 +135,7 @@ color = Color(0, 0, 0, 1)
 [node name="HP" type="ColorRect" parent="HP2"]
 custom_minimum_size = Vector2(0, 46)
 layout_direction = 2
+layout_mode = 0
 offset_left = -362.0
 offset_top = 61.0
 offset_right = -62.0
@@ -140,6 +145,7 @@ color = Color(1, 0, 0, 1)
 
 [node name="TextureRect2" type="TextureRect" parent="HP2"]
 custom_minimum_size = Vector2(200, 170)
+layout_mode = 0
 offset_left = -124.0
 offset_right = 988.0
 offset_bottom = 608.0
