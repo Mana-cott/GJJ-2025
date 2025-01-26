@@ -42,6 +42,7 @@ theme_override_constants/separation = 50
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -170,6 +171,7 @@ visible = false
 layout_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(1007, 193)
 scale = Vector2(3.68363, 3.68363)
 texture = ExtResource("2_jl4re")
