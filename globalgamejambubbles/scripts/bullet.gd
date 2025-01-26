@@ -21,13 +21,16 @@ var oldBub = false
 var has_dealt_damage = false
 var ricochetCount = 0
 var shooter = 0
+var charge_boost = 0
 
 @onready var timer = $Timer
 
 func _ready():
 	global_position = pos
 	global_rotation = rot #- ((2*PI)/4)
-	velocity = Vector2(stats_bullet["BULLET_SPEED"], 0).rotated(dir)
+	velocity = Vector2((stats_bullet["BULLET_SPEED"]), 0).rotated(dir)
+	if charge_boost > 0: 
+		velocity *= charge_boost
 	ricochetCount = stats_bullet["RICOCHET"]
 	timer.start(stats_bullet["BULLET_DURATION"])
 
