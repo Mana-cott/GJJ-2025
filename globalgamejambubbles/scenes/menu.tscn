@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dh3wy4ul4oqy8"]
+[gd_scene load_steps=5 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
 [ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_iov68"]
+[ext_resource type="PackedScene" uid="uid://bo8eajfo2o3tn" path="res://scenes/control_menu.tscn" id="3_2vke0"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -153,6 +154,10 @@ text = "Gum"
 visible = false
 layout_mode = 1
 
+[node name="Control_Menu" parent="." instance=ExtResource("3_2vke0")]
+visible = false
+layout_mode = 1
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soda" to="." method="_on_soda_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soap" to="." method="_on_soap_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Gum" to="." method="_on_gum_pressed"]
@@ -165,3 +170,4 @@ layout_mode = 1
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soap2" to="." method="_on_soap2_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Gum2" to="." method="_on_gum2_pressed"]
 [connection signal="cancel" from="Option_Menu" to="." method="_on_option_menu_cancel"]
+[connection signal="cancel" from="Control_Menu" to="." method="_on_control_menu_cancel"]

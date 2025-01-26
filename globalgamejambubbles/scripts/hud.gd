@@ -22,6 +22,8 @@ var soap_health_color = Color(1.0,0.87,0.88,0.91)
 var gum_health_color = Color(1.0,0.41, 0.71, 1)
 
 
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -57,13 +59,11 @@ func display_HUD_player(Player : CharacterBody2D):
 				"gum":
 					health_bar1.set_color(gum_health_color)
 
-
 func change_ammo_left(ammo_left : int , player:int):
 	if player == 1:
 		nb_bullet_left1.set_text(str(ammo_left))
 	elif player == 2:
 		nb_bullet_left2.set_text(str(ammo_left))
-
 
 #just change the health bar
 func change_life_bar(health:float , player:int):
@@ -82,7 +82,21 @@ func increment_life_bar(health:float , player:int):
 		health_bar2.set_size(Vector2(health_bar2.get_size().x +health,health_bar2.get_size().y))
 		if (health_bar2.get_size().x > MAX_HEALTH_BAR):
 			health_bar2.set_size(Vector2(MAX_HEALTH_BAR,health_bar2.get_size().y)) 
-	
+
+#use this function for sparkling the health bar (when its full maybe)
+func bursted_spark_effect(player : int , time:int):
+	if(player == 1):
+		animation_spark_effect(p1_Hp,time)
+	else:
+		animation_spark_effect(p2_Hp,time)
+
+func animation_spark_effect(hp : Control, time:int):
+	for x in time*10:
+		hp.set("visible",false)
+		await get_tree().create_timer(0.05).timeout
+		hp.set("visible",true)
+		await get_tree().create_timer(0.05).timeout
+
 
 #awfully long
 func change_color_ammo():

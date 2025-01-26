@@ -2,6 +2,7 @@ extends Control
 
 @onready var toggle_look_mode_button = $MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode
 @onready var optionMenu = $Option_Menu 
+@onready var controlMenu = $Control_Menu
 @onready var marginContainer = $MarginContainer
 @onready var view_controls_button = $MarginContainer/HBoxContainer/VBoxContainer/Controls
 @onready var weapon_label = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Weapon_Label
@@ -29,7 +30,8 @@ func _on_play_pressed():
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _on_controls_pressed() -> void:
-	pass # Replace with function body.
+	controlMenu.set_visible(true)
+	marginContainer.set_visible(false)
 
 func _on_option_pressed() -> void:
 	optionMenu.set_visible(true)
@@ -63,3 +65,8 @@ func _on_quit_pressed() -> void:
 func _on_option_menu_cancel() -> void:
 	optionMenu.set_visible(false)
 	marginContainer.set_visible(true) # Replace with function body.
+
+
+func _on_control_menu_cancel() -> void:
+	controlMenu.set_visible(false)
+	marginContainer.set_visible(true)
