@@ -83,6 +83,7 @@ const BULLET_GUM = {
 
 const COYOTE_LENIENCY = 0.2
 const BUBBLE_STATE_DURATION = 3.0 # 3 seconds
+const HIT_DURATION = 0.3
 
 signal defeat(id:int)
 
@@ -101,6 +102,8 @@ var reloading = false
 var reload_timer = 0.0
 var is_bubbled = false
 var bubble_timer = 0.0
+var is_hit = false
+var hit_timer = 0.0
 
 # Local var for character selected
 var character_selected = "scubahood"
@@ -121,6 +124,17 @@ var charge_timer = 0
 # Player current ammo, set to MAX_AMMO
 var bullets_left = player_stats["MAX_AMMO"]
 
+# Loading sound effects
+var running_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/1-Running.mp3")
+var jump_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/2-Jumping.mp3")
+var hit_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Taking damage.mp3")
+var death_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Death sfx.mp3")
+var collosus_shoot_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/colloSUS - Shot Firing.mp3")
+var collosus_reload_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/colloSUS - Shot Reloading.mp3")
+var dagon_shoot_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Dagon - Shot Firing.mp3")
+var dagon_reload_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Dagon - Shot Reloading.mp3")
+var scubahood_shoot_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Scubahood - Shot Firing.mp3")
+var scubahood_reload_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Scubahood - Shot Reloading.mp3")
 
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
@@ -135,6 +149,7 @@ var bullets_left = player_stats["MAX_AMMO"]
 @onready var label_state_ammo = $reload_message
 @onready var middle_body_part = $Sprite2D
 @onready var bubble_state = $BubbleStates
+@onready var sound_effects = $SoundEffects
 
 func _ready():
 	# Set reticle inputs
@@ -187,6 +202,13 @@ func _ready():
 
 func _physics_process(delta):
 	
+	# Handles hit timer
+	if is_hit:
+		hit_timer -= delta
+		if hit_timer <= 0:
+			hit_timer = 0.0
+			is_hit = false
+	
 	# Handles natural health regen
 	regen_timer += 1
 	if regen_timer >= 30:
@@ -235,10 +257,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump" + str(player_nb)):
 		if is_on_floor() || left_ground_counter <= COYOTE_LENIENCY:
 			lower_body_sprite.play(character_selected + "_jump")
+			play_sound("jump")
 			velocity.y = player_stats["JUMP_VELOCITY"]
 		elif double_jumps_left > 0:
 			upper_body_sprite.play(character_selected + "_bubble_jump")
 			lower_body_sprite.play(character_selected + "_double_jump")
+			play_sound("jump")
 			velocity.y = player_stats["JUMP_VELOCITY"]
 			double_jumps_left -= 1
 			is_double_jumping = true
@@ -318,6 +342,7 @@ func _physics_process(delta):
 		reloading = true
 		reload_timer = player_stats["RELOAD_DURATION"]
 		upper_body_sprite.play(character_selected + "_reload")
+		play_sound("reload")
 		move_and_slide()
 		display_state_ammo("OK!!!" , false)
 		return
@@ -328,6 +353,7 @@ func _physics_process(delta):
 		slide_timer = player_stats["SLIDE_DURATION"]
 		lower_body_collision_shape.disabled = true
 		lower_body_sprite.play(character_selected + "_slide")
+		play_sound("running")
 		velocity.x = player_stats["SLIDE_SPEED"] * (1 if face_right else -1)
 		move_and_slide()
 		return
@@ -356,29 +382,39 @@ func _physics_process(delta):
 	if not is_on_floor() and not is_double_jumping:
 		lower_body_sprite.play(character_selected + "_jump")
 	elif velocity.x == 0 and is_on_floor():
-		if shooting || shoot_animation_timer > 0:
-			shoot_animation_timer -= delta
-			upper_body_sprite.play(character_selected + "_shoot")
-		elif reloading:
-			upper_body_sprite.play(character_selected + "_reload")
-		else:
-			upper_body_sprite.play(character_selected + "_idle")
+		if not is_hit:
+			if shooting || shoot_animation_timer > 0:
+				shoot_animation_timer -= delta
+				upper_body_sprite.play(character_selected + "_shoot")
+				play_sound("shoot")
+			elif reloading:
+				upper_body_sprite.play(character_selected + "_reload")
+				play_sound("reload")
+			else:
+				upper_body_sprite.play(character_selected + "_idle")
 		lower_body_sprite.play(character_selected + "_idle")
 	elif velocity.x != 0 and is_on_floor():
-		if shooting || shoot_animation_timer > 0:
-			shoot_animation_timer -= delta
-			upper_body_sprite.play(character_selected + "_shoot")
-		elif reloading:
-			upper_body_sprite.play(character_selected + "_reload")
-		else:
-			upper_body_sprite.play(character_selected + "_default")
+		if not is_hit:
+			if shooting || shoot_animation_timer > 0:
+				shoot_animation_timer -= delta
+				upper_body_sprite.play(character_selected + "_shoot")
+				play_sound("shoot")
+			elif reloading:
+				upper_body_sprite.play(character_selected + "_reload")
+				play_sound("reload")
+			else:
+				upper_body_sprite.play(character_selected + "_default")
 		lower_body_sprite.play(character_selected + "_run")
+		play_sound("running")
 
 	move_and_slide()
 
 # Handles player taking damage
 func damage_function(dmg_source:Bullet):
 	if dmg_source.shooter != player_nb:
+		upper_body_sprite.play(character_selected + "_hit")
+		is_hit = true
+		hit_timer = HIT_DURATION
 		current_health -= (dmg_source.stats_bullet["DAMAGE"] + dmg_source.charge_boost)
 		regen_timer = 0
 		print(current_health)
@@ -418,3 +454,30 @@ func display_state_ammo(message:String , display:bool):
 		label_state_ammo.set_text("OK!!!")
 		await get_tree().create_timer(0.5).timeout
 		label_state_ammo.set_visible(false)
+		
+# Function to handle SFX
+func play_sound(sound_name):
+	match sound_name:
+		"running":
+			$SoundEffects.stream = running_sfx
+		"jump":
+			$SoundEffects.stream = jump_sfx
+		"hit":
+			$SoundEffects.stream = hit_sfx
+		"death":
+			$SoundEffects.stream = death_sfx
+		"shoot_sfx":
+			if character_selected == "scubahood":
+				$SoundEffects.stream = scubahood_shoot_sfx
+			elif character_selected == "collosus":
+				$SoundEffects.stream = collosus_shoot_sfx
+			elif character_selected == "dagon":
+				$SoundEffects.stream = dagon_shoot_sfx
+		"reload":
+			if character_selected == "scubahood":
+				$SoundEffects.stream = scubahood_reload_sfx
+			elif character_selected == "collosus":
+				$SoundEffects.stream = collosus_reload_sfx
+			elif character_selected == "dagon":
+				$SoundEffects.stream = dagon_reload_sfx
+	$SoundEffects.play()

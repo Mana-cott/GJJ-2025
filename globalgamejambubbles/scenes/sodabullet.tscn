@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bscknoi34ix7b"]
+[gd_scene load_steps=11 format=3 uid="uid://bscknoi34ix7b"]
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_dqdg1"]
 [ext_resource type="Texture2D" uid="uid://dr4ka77238y1f" path="res://assets/sprites/soda_bubble.png" id="2_c2mwe"]
 [ext_resource type="Texture2D" uid="uid://dneem16ivmsw6" path="res://assets/sprites/soda_bubble_default_pop.png" id="3_8eq6p"]
+[ext_resource type="AudioStream" uid="uid://cx4n4a1ewfybv" path="res://assets/audio/2-Sounds GGJ/SFX/Bubble Popping.mp3" id="4_qhs5n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxabb"]
 radius = 8.0
@@ -68,5 +69,10 @@ scale = Vector2(1.03333, 1.03571)
 sprite_frames = SubResource("SpriteFrames_krwwt")
 animation = &"pop"
 frame_progress = 0.0176364
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_qhs5n")
+volume_db = 24.0
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

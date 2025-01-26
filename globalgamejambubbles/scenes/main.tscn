@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://w288fuvdlvh2"]
+[gd_scene load_steps=12 format=4 uid="uid://w288fuvdlvh2"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_dnec3"]
 [ext_resource type="Texture2D" uid="uid://c0v7u6ik32ifs" path="res://assets/sprites/twilight-tiles.png" id="2_2mfmr"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cry5y32md5mej" path="res://scenes/hud.tscn" id="3_uxogs"]
 [ext_resource type="PackedScene" uid="uid://bqnwmbwut2a6u" path="res://scenes/victory_screen.tscn" id="4_2j2e4"]
 [ext_resource type="Texture2D" uid="uid://c3ws5ugncxp51" path="res://assets/sprites/Ocean.png" id="4_uovs3"]
+[ext_resource type="AudioStream" uid="uid://cy8res474r03x" path="res://assets/audio/2-Sounds GGJ/BGM/Hack Your Way!  CrossCode (Original Game Soundtrack).mp3" id="7_em2xh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hints"]
 texture = ExtResource("2_2mfmr")
@@ -124,6 +125,12 @@ texture = ExtResource("4_uovs3")
 
 [node name="victory_screen" parent="HUD" instance=ExtResource("4_2j2e4")]
 visible = false
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_em2xh")
+volume_db = -2.0
+autoplay = true
+parameters/looping = true
 
 [connection signal="main_menu" from="HUD/victory_screen" to="." method="_on_victory_screen_main_menu"]
 [connection signal="retry" from="HUD/victory_screen" to="." method="_on_victory_screen_retry"]

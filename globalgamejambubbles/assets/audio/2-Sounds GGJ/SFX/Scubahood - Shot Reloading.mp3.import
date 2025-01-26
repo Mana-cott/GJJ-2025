@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c815mkndbgcmu"
+path="res://.godot/imported/Scubahood - Shot Reloading.mp3-0b42597047353b47317445ea8a61827d.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/2-Sounds GGJ/SFX/Scubahood - Shot Reloading.mp3"
+dest_files=["res://.godot/imported/Scubahood - Shot Reloading.mp3-0b42597047353b47317445ea8a61827d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

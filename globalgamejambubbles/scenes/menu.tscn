@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dh3wy4ul4oqy8"]
+[gd_scene load_steps=11 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
 [ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_iov68"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bo8eajfo2o3tn" path="res://scenes/control_menu.tscn" id="3_2vke0"]
 [ext_resource type="Texture2D" uid="uid://h2k2ox37wge1" path="res://assets/sprites/dagon_icon.png" id="3_c563x"]
 [ext_resource type="Texture2D" uid="uid://rwghshxuqlm3" path="res://assets/sprites/collosus_of_rhodes_icon.png" id="4_pdfg5"]
+[ext_resource type="AudioStream" uid="uid://byo5rurft6spj" path="res://assets/audio/2-Sounds GGJ/BGM/Waterworks.ogg" id="8_ecjla"]
+[ext_resource type="AudioStream" uid="uid://wahq52br2lfv" path="res://assets/audio/2-Sounds GGJ/SFX/Menu selecting.mp3" id="9_o6m2j"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -153,6 +155,14 @@ layout_mode = 1
 position = Vector2(1007, 193)
 scale = Vector2(3.68363, 3.68363)
 texture = ExtResource("2_jl4re")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_ecjla")
+pitch_scale = 0.5
+autoplay = true
+
+[node name="SoundEffects" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_o6m2j")
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Scubahood" to="." method="_on_scubahood_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Dagon" to="." method="_on_dagon_pressed"]

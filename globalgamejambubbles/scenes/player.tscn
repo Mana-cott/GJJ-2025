@@ -1,4 +1,4 @@
-[gd_scene load_steps=169 format=3 uid="uid://chmwbafs6r60"]
+[gd_scene load_steps=172 format=3 uid="uid://chmwbafs6r60"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_oqhaq"]
 [ext_resource type="Texture2D" uid="uid://dirk3sbss88ko" path="res://assets/sprites/dagon_legs_complete.png" id="2_pqpc7"]
@@ -405,6 +405,10 @@ region = Rect2(240, 192, 80, 64)
 atlas = ExtResource("5_d66oj")
 region = Rect2(0, 0, 80, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgusk"]
+atlas = ExtResource("5_d66oj")
+region = Rect2(160, 192, 80, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_nr0dk"]
 atlas = ExtResource("5_d66oj")
 region = Rect2(0, 0, 80, 64)
@@ -460,6 +464,10 @@ region = Rect2(240, 192, 80, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_j6lrh"]
 atlas = ExtResource("3_kkl2o")
 region = Rect2(0, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1su3"]
+atlas = ExtResource("3_kkl2o")
+region = Rect2(160, 192, 80, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hs6vk"]
 atlas = ExtResource("3_kkl2o")
@@ -528,6 +536,10 @@ region = Rect2(160, 256, 80, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_3iulc"]
 atlas = ExtResource("3_f1mse")
 region = Rect2(160, 64, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nifh"]
+atlas = ExtResource("3_f1mse")
+region = Rect2(0, 256, 80, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tupaf"]
 atlas = ExtResource("3_f1mse")
@@ -625,6 +637,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_mgusk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgusk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgusk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgusk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgusk")
+}],
+"loop": true,
+"name": &"collosus_hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_nr0dk")
 }, {
 "duration": 1.0,
@@ -700,6 +732,26 @@ animations = [{
 }],
 "loop": true,
 "name": &"dagon_default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1su3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1su3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1su3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1su3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1su3")
+}],
+"loop": true,
+"name": &"dagon_hit",
 "speed": 5.0
 }, {
 "frames": [{
@@ -792,6 +844,26 @@ animations = [{
 }],
 "loop": true,
 "name": &"scubahood_flip",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nifh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nifh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nifh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nifh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nifh")
+}],
+"loop": true,
+"name": &"scubahood_hit",
 "speed": 5.0
 }, {
 "frames": [{
@@ -1332,7 +1404,7 @@ position = Vector2(0, -1)
 position = Vector2(1.78814e-07, -10)
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_vbhm7")
-animation = &"load"
+animation = &"scubahood_hit"
 offset = Vector2(2.5, 0)
 
 [node name="SignifierRayCast" type="RayCast2D" parent="UpperBody"]
@@ -1390,3 +1462,8 @@ position = Vector2(0, -5)
 scale = Vector2(0.609375, 0.609375)
 sprite_frames = SubResource("SpriteFrames_kjuga")
 animation = &"collosus_pop"
+
+[node name="SoundEffects" type="AudioStreamPlayer2D" parent="."]
+volume_db = 5.0
+pitch_scale = 0.75
+autoplay = true

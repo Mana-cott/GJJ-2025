@@ -26,6 +26,7 @@ var charge_boost = 0
 @onready var bullet_sprite = $Sprite2D
 @onready var timer = $Timer
 @onready var bullet_pop = $BulletPop
+@onready var pop_sfx = $AudioStreamPlayer2D
 
 func _ready():
 	bullet_sprite.visible = true
@@ -104,9 +105,10 @@ func _physics_process(delta):
 
 # Maybe a little animation before deleted the bublle
 func disappear():
+	bullet_pop.play("pop")
 	bullet_sprite.visible = false
 	bullet_pop.visible = true
-	bullet_pop.play("pop")
+	pop_sfx.play()
 	await get_tree().create_timer(0.3).timeout
 	queue_free()
 
