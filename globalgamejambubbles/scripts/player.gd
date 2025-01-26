@@ -134,7 +134,9 @@ var charge_timer = 0
 @onready var bubble_state = $BubbleStates
 
 func _ready():
-	#Character select in effect *mad rhymes
+	# Set reticle inputs
+	reticle.player_nb = player_nb
+	# Character select in effect *mad rhymes
 	if player_nb == 1:
 		match Global.character_p1:
 			"scubahood":

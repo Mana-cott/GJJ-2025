@@ -26,7 +26,6 @@ func _ready() -> void:
 	p2.player_scale = Vector2(3, 3)	
 	get_tree().current_scene.add_child(p2)
 	HUD.display_HUD_player(p2)
-	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
