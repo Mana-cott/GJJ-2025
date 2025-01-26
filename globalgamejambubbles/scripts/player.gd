@@ -82,6 +82,7 @@ const BULLET_GUM = {
 	"CAN_SHOOTER_BOUNCE": true}
 
 const COYOTE_LENIENCY = 0.2
+const BUBBLE_STATE_DURATION = 3.0 # 3 seconds
 
 var left_ground_counter = 0
 var double_jumps_left = 1
@@ -97,6 +98,8 @@ var shoot_cooldown = 0
 var shoot_animation_timer = 0.0
 var reloading = false
 var reload_timer = 0.0
+var is_bubbled = false
+var bubble_timer = 0.0
 
 # Local var for character selected
 var character_selected = "scubahood"
@@ -125,6 +128,7 @@ var current_health = player_stats["HEALTH"]
 @onready var soda_bullet = preload("res://scenes/sodabullet.tscn")
 @onready var label_state_ammo = $reload_message
 @onready var middle_body_part = $Sprite2D
+@onready var bubble_state = $BubbleStates
 
 func _ready():
 	#Character select in effect *mad rhymes
@@ -152,6 +156,9 @@ func _ready():
 		player_stats = STATS_SOAP
 	else:
 		player_stats = STATS_GUM
+		
+	# Hide bubble state
+	bubble_state.visible = false
 
 func _physics_process(delta):
 	print(character_selected)
@@ -255,7 +262,22 @@ func _physics_process(delta):
 		velocity.x = player_stats["SLIDE_SPEED"] * (1 if face_right else -1)
 		move_and_slide()
 		return
-		
+	
+	# Handle bubble state.
+	# unfinished!!!
+	if is_bubbled:
+		bubble_timer -= delta
+		if bubble_timer <= 0:
+			sliding = false
+			lower_body_collision_shape.disabled = false
+		else:
+			velocity = Vector2.ZERO
+			move_and_slide()
+			return
+			
+	# Trigger bubblestate.
+	# Use same as slide logic or something
+
 	# Handle animations.
 	if not is_on_floor() and not is_double_jumping:
 		lower_body_sprite.play(character_selected + "_jump")
@@ -285,7 +307,9 @@ func damage_function(dmg_source:Bullet):
 	if dmg_source.shooter != player_nb:
 		current_health -= dmg_source.stats_bullet["DAMAGE"]
 		print(current_health)
-
+		if current_health <= 0:
+			# Bubble state in effect
+			bubble_state = true
 
 # Create and shoot a bullet
 func shoot_bullet():
