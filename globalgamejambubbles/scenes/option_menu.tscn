@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dex5kw7svblgx"]
+[gd_scene load_steps=3 format=3 uid="uid://dex5kw7svblgx"]
 
 [ext_resource type="Script" path="res://scripts/option_menu.gd" id="1_hanp4"]
-[ext_resource type="AudioStream" uid="uid://wahq52br2lfv" path="res://assets/audio/2-Sounds GGJ/SFX/Menu selecting.mp3" id="2_ek5tf"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -98,9 +97,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 42
 text = "  Cancel  "
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_ek5tf")
 
 [connection signal="value_changed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Volume_Slider/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/VFX_Slider/HSlider" to="." method="_on_h_slider_value_changed"]
