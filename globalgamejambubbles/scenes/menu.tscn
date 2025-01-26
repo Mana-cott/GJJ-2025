@@ -81,6 +81,7 @@ theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("SystemFont_1eqlm")
 theme_override_font_sizes/font_size = 40
+text = "Character: SCUBAHOOD"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -172,6 +173,7 @@ theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("SystemFont_1eqlm")
 theme_override_font_sizes/font_size = 40
+text = "Character: DAGON"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -218,6 +220,9 @@ layout_mode = 1
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soda" to="." method="_on_soda_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soap" to="." method="_on_soap_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Gum" to="." method="_on_gum_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector/Scubahood" to="." method="_on_scubahood_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector/Dagon" to="." method="_on_dagon_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector/CollosusOfRhodes" to="." method="_on_collosus_of_rhodes_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode" to="." method="_on_toggle_look_mode_pressed"]
@@ -225,4 +230,7 @@ layout_mode = 1
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soda2" to="." method="_on_soda2_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soap2" to="." method="_on_soap2_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Gum2" to="." method="_on_gum2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2/Scubahood2" to="." method="_on_scubahood_2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2/Dagon2" to="." method="_on_dagon_2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2/CollosusOfRhodes2" to="." method="_on_collosus_of_rhodes_2_pressed"]
 [connection signal="cancel" from="Option_Menu" to="." method="_on_option_menu_cancel"]

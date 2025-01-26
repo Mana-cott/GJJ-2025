@@ -6,6 +6,9 @@ extends Control
 @onready var view_controls_button = $MarginContainer/HBoxContainer/VBoxContainer/Controls
 @onready var weapon_label = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Weapon_Label
 @onready var weapon_label2 = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Weapon_Label2
+@onready var character_label = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Character_Label
+@onready var character_label2 = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Character_Label2
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -63,3 +66,25 @@ func _on_quit_pressed() -> void:
 func _on_option_menu_cancel() -> void:
 	optionMenu.set_visible(false)
 	marginContainer.set_visible(true) # Replace with function body.
+
+# Character select p1
+func _on_scubahood_pressed():
+	Global.character_p1 = "scubahood"
+	character_label.text = "Character: SCUBAHOOD"
+func _on_dagon_pressed():
+	Global.character_p1 = "dagon"
+	character_label.text = "Character: DAGON"
+func _on_collosus_of_rhodes_pressed():
+	Global.character_p1 = "collosus"
+	character_label.text = "Character: COLLOSUS OF RHODES"
+
+# Character select p2
+func _on_scubahood_2_pressed():
+	Global.character_p2 = "scubahood"
+	character_label2.text = "Character: SCUBAHOOD"
+func _on_dagon_2_pressed():
+	Global.character_p2 = "dagon"
+	character_label2.text = "Character: DAGON"
+func _on_collosus_of_rhodes_2_pressed():
+	Global.character_p2 = "collosus"
+	character_label2.text = "Character: COLLOSUS OF RHODES"
