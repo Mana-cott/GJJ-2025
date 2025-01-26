@@ -1,10 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://bscknoi34ix7b"]
+[gd_scene load_steps=10 format=3 uid="uid://bscknoi34ix7b"]
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_dqdg1"]
 [ext_resource type="Texture2D" uid="uid://dr4ka77238y1f" path="res://assets/sprites/soda_bubble.png" id="2_c2mwe"]
+[ext_resource type="Texture2D" uid="uid://dneem16ivmsw6" path="res://assets/sprites/soda_bubble_default_pop.png" id="3_8eq6p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxabb"]
 radius = 8.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ifh86"]
+atlas = ExtResource("3_8eq6p")
+region = Rect2(0, 0, 30, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s6hi3"]
+atlas = ExtResource("3_8eq6p")
+region = Rect2(30, 0, 30, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vl0w"]
+atlas = ExtResource("3_8eq6p")
+region = Rect2(60, 0, 30, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x08co"]
+atlas = ExtResource("3_8eq6p")
+region = Rect2(90, 0, 30, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_krwwt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ifh86")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s6hi3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vl0w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x08co")
+}],
+"loop": true,
+"name": &"pop",
+"speed": 12.0
+}]
 
 [node name="Bullet" type="CharacterBody2D"]
 collision_layer = 4
@@ -24,5 +61,12 @@ one_way_collision_margin = 0.0
 wait_time = 5.0
 one_shot = true
 autostart = true
+
+[node name="BulletPop" type="AnimatedSprite2D" parent="."]
+position = Vector2(-0.5, 1.5)
+scale = Vector2(1.03333, 1.03571)
+sprite_frames = SubResource("SpriteFrames_krwwt")
+animation = &"pop"
+frame_progress = 0.0176364
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

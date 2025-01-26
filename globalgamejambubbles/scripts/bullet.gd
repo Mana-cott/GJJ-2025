@@ -23,9 +23,13 @@ var ricochetCount = 0
 var shooter = 0
 var charge_boost = 0
 
+@onready var bullet_sprite = $Sprite2D
 @onready var timer = $Timer
+@onready var bullet_pop = $BulletPop
 
 func _ready():
+	bullet_sprite.visible = true
+	bullet_pop.visible = false
 	global_position = pos
 	global_rotation = rot #- ((2*PI)/4)
 	velocity = Vector2((stats_bullet["BULLET_SPEED"]), 0).rotated(dir)
@@ -100,6 +104,10 @@ func _physics_process(delta):
 
 # Maybe a little animation before deleted the bublle
 func disappear():
+	bullet_sprite.visible = false
+	bullet_pop.visible = true
+	bullet_pop.play("pop")
+	await get_tree().create_timer(0.3).timeout
 	queue_free()
 
 # When timer is up, bullet pops
