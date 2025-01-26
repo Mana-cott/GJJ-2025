@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdh64wobe485i"]
+
+[ext_resource type="Texture2D" uid="uid://jg2vryan2uue" path="res://assets/sprites/reticle.png" id="1_88p8h"]
+[ext_resource type="Script" path="res://scripts/reticle_2.gd" id="1_f7knh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w32mq"]
+radius = 48.0
+
+[node name="Reticle2" type="CharacterBody2D"]
+script = ExtResource("1_f7knh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2.00165, 2.00165)
+texture = ExtResource("1_88p8h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_w32mq")

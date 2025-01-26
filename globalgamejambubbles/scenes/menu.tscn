@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dh3wy4ul4oqy8"]
+[gd_scene load_steps=7 format=3 uid="uid://dh3wy4ul4oqy8"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2y1uf"]
 [ext_resource type="PackedScene" uid="uid://dex5kw7svblgx" path="res://scenes/option_menu.tscn" id="2_iov68"]
+[ext_resource type="Texture2D" uid="uid://dv7dsehkeje3i" path="res://assets/sprites/scubahood_icon.png" id="2_oehbm"]
+[ext_resource type="Texture2D" uid="uid://h2k2ox37wge1" path="res://assets/sprites/dagon_icon.png" id="3_c563x"]
+[ext_resource type="Texture2D" uid="uid://rwghshxuqlm3" path="res://assets/sprites/collosus_of_rhodes_icon.png" id="4_pdfg5"]
 
 [sub_resource type="SystemFont" id="SystemFont_1eqlm"]
 font_names = PackedStringArray("Impact")
@@ -69,6 +72,18 @@ text = "P1 Surrently Selected Bubble: Soap"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Character_Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_1eqlm")
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Soda" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
@@ -84,6 +99,26 @@ text = "Soap
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Gum"
+
+[node name="HBoxContainerCharacterSelector" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
+layout_mode = 2
+alignment = 1
+
+[node name="Scubahood" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+text = "Scubahood"
+icon = ExtResource("2_oehbm")
+
+[node name="Dagon" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector"]
+layout_mode = 2
+text = "Dagon"
+icon = ExtResource("3_c563x")
+
+[node name="CollosusOfRhodes" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector"]
+layout_mode = 2
+text = "Collosus of Rhodes"
+icon = ExtResource("4_pdfg5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -103,7 +138,7 @@ text = "Controls"
 [node name="ToggleLookMode" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
-text = "Aim: Mouse"
+text = "P1 Aim: Mouse"
 
 [node name="Option" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -128,6 +163,18 @@ text = "P2 Surrently Selected Bubble: Soap"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Character_Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_1eqlm")
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Soda2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
@@ -143,6 +190,26 @@ text = "Soap
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Gum"
+
+[node name="HBoxContainerCharacterSelector2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
+layout_mode = 2
+alignment = 1
+
+[node name="Scubahood2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+text = "Scubahood"
+icon = ExtResource("2_oehbm")
+
+[node name="Dagon2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2"]
+layout_mode = 2
+text = "Dagon"
+icon = ExtResource("3_c563x")
+
+[node name="CollosusOfRhodes2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2"]
+layout_mode = 2
+text = "Collosus of Rhodes"
+icon = ExtResource("4_pdfg5")
 
 [node name="Option_Menu" parent="." instance=ExtResource("2_iov68")]
 visible = false

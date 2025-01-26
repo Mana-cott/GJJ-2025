@@ -9,6 +9,7 @@ func _ready() -> void:
 	
 	# Create 2 children Player instances, assign them player nb 1 and player nb 2
 	var player_scene = preload("res://scenes/player.tscn")
+	var player2_scene = preload("res://scenes/player2.tscn")
 	
 	# Instantiate player 1
 	var p1 = player_scene.instantiate()
@@ -21,7 +22,7 @@ func _ready() -> void:
 	
 	
 	# Instantiate player 2
-	var p2 = player_scene.instantiate()
+	var p2 = player2_scene.instantiate()
 	p2.player_nb = 2
 	p2.weapon_type = Global.weapon_type_p2
 	p2.init_pos = Vector2(200, 0)

@@ -19,10 +19,10 @@ func _process(delta):
 func _on_toggle_look_mode_pressed():
 	if Global.look_mode == "mouse":
 		Global.look_mode = "arrowkeys"
-		toggle_look_mode_button.text = "Aim: Arrow Keys"
+		toggle_look_mode_button.text = "P1 Aim: Arrow Keys"
 	else:
 		Global.look_mode = "mouse"
-		toggle_look_mode_button.text = "Aim: Mouse"
+		toggle_look_mode_button.text = "P1 Aim: Mouse"
 	
 
 func _on_play_pressed():
