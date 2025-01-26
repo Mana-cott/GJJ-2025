@@ -21,8 +21,8 @@ var soda_health_color = Color(1.0,0.49,0.22,0.20)
 var soap_health_color = Color(1.0,0.87,0.88,0.91)
 var gum_health_color = Color(1.0,0.41, 0.71, 1)
 
-
-
+var Player1 
+var Player2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -97,6 +97,11 @@ func animation_spark_effect(hp : Control, time:int):
 		hp.set("visible",true)
 		await get_tree().create_timer(0.05).timeout
 
+func setting_Player(player:CharacterBody2D , nb_player:int):
+	if nb_player == 1:
+		Player1 = player
+	elif nb_player ==2:
+		Player2 = player
 
 #awfully long
 func change_color_ammo():

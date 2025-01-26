@@ -143,6 +143,11 @@ layout_mode = 2
 text = "Collosus of Rhodes"
 icon = ExtResource("4_pdfg5")
 
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer"]
+position = Vector2(1007, 193)
+scale = Vector2(3.68363, 3.68363)
+texture = ExtResource("2_jl4re")
+
 [node name="Option_Menu" parent="." instance=ExtResource("2_iov68")]
 visible = false
 layout_mode = 1
