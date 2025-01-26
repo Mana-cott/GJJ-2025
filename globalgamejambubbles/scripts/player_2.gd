@@ -100,6 +100,8 @@ var shoot_animation_timer = 0.0
 var reloading = false
 var reload_timer = 0.0
 
+# Local var for character selected
+var character_selected = "scubahood"
 # Local var for selected weapon type
 var weapon_type = "soda"
 # Local var for identifying which player character
@@ -124,8 +126,21 @@ var current_health = player_stats["HEALTH"]
 @onready var gum_bullet = preload("res://scenes/gumbullet.tscn")
 @onready var soda_bullet = preload("res://scenes/sodabullet.tscn")
 @onready var label_state_ammo = $reload_message
+@onready var middle_body_part = $Sprite2D
 
 func _ready():
+	#Character select in effect *mad rhymes
+	match Global.character_p2:
+		"scubahood":
+			character_selected = "scubahood"
+			middle_body_part.texture = load("res://assets/sprites/body_blocker.png")
+		"dagon":
+			character_selected = "dagon"
+			middle_body_part.texture = load("res://assets/sprites/dagon_body_blocker.png")
+		"collosus":
+			character_selected = "collosus"
+			middle_body_part.texture = load("res://assets/sprites/collosus_body_blocker.png")
+			
 	#Sets initial position, size
 	global_position = init_pos
 	scale = player_scale
@@ -182,11 +197,11 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump_p2"):
 		if is_on_floor() || left_ground_counter <= COYOTE_LENIENCY:
-			lower_body_sprite.play("jump")
+			lower_body_sprite.play(character_selected + "_jump")
 			velocity.y = player_stats["JUMP_VELOCITY"]
 		elif double_jumps_left > 0:
-			upper_body_sprite.play("bubble_jump")
-			lower_body_sprite.play("double_jump")
+			upper_body_sprite.play(character_selected + "_bubble_jump")
+			lower_body_sprite.play(character_selected + "_double_jump")
 			velocity.y = player_stats["JUMP_VELOCITY"]
 			double_jumps_left -= 1
 			is_double_jumping = true
@@ -227,7 +242,7 @@ func _physics_process(delta):
 		bullets_left = player_stats["MAX_AMMO"]
 		reloading = true
 		reload_timer = player_stats["RELOAD_DURATION"]
-		upper_body_sprite.play("reload")
+		upper_body_sprite.play(character_selected + "_reload")
 		move_and_slide()
 		display_state_ammo("OK!!!" , false)
 		return
@@ -237,32 +252,32 @@ func _physics_process(delta):
 		sliding = true
 		slide_timer = player_stats["SLIDE_DURATION"]
 		lower_body_collision_shape.disabled = true
-		lower_body_sprite.play("slide")
+		lower_body_sprite.play(character_selected + "_slide")
 		velocity.x = player_stats["SLIDE_SPEED"] * (1 if face_right else -1)
 		move_and_slide()
 		return
 		
 	# Handle animations.
 	if not is_on_floor() and not is_double_jumping:
-		lower_body_sprite.play("jump")
+		lower_body_sprite.play(character_selected + "_jump")
 	elif velocity.x == 0 and is_on_floor():
 		if shooting || shoot_animation_timer > 0:
 			shoot_animation_timer -= delta
-			upper_body_sprite.play("shoot")
+			upper_body_sprite.play(character_selected + "_shoot")
 		elif reloading:
-			upper_body_sprite.play("reload")
+			upper_body_sprite.play(character_selected + "_reload")
 		else:
-			upper_body_sprite.play("idle")
-		lower_body_sprite.play("idle")
+			upper_body_sprite.play(character_selected + "_idle")
+		lower_body_sprite.play(character_selected + "_idle")
 	elif velocity.x != 0 and is_on_floor():
 		if shooting || shoot_animation_timer > 0:
 			shoot_animation_timer -= delta
-			upper_body_sprite.play("shoot")
+			upper_body_sprite.play(character_selected + "_shoot")
 		elif reloading:
-			upper_body_sprite.play("reload")
+			upper_body_sprite.play(character_selected + "_reload")
 		else:
-			upper_body_sprite.play("default")
-		lower_body_sprite.play("run")
+			upper_body_sprite.play(character_selected + "_default")
+		lower_body_sprite.play(character_selected + "_run")
 
 	move_and_slide()
 
