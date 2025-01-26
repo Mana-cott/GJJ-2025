@@ -91,8 +91,6 @@ signal ammo_update(id:int, current_ammo:int)
 signal bubbled_update(id:int, BUBBLE_STATE_DURATION)
 const HIT_DURATION = 0.3
 
-signal defeat(id:int)
-
 var left_ground_counter = 0
 var double_jumps_left = 1
 var is_double_jumping = false
