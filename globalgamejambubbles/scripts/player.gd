@@ -3,25 +3,25 @@ extends CharacterBody2D
 # Stats for Soda bubble
 const STATS_SODA = {
 	"HEALTH": 500,
-	"SPEED": 1000, 
+	"SPEED": 800, 
 	"JUMP_VELOCITY": -600, 
 	"SLIDE_SPEED": 1200, 
 	"SLIDE_DURATION": 0.375, 
 	"SLIDE_GRAVITY": 1500, 
-	"SHOOT_COOLDOWN_DURATION": 0.1, 
+	"SHOOT_COOLDOWN_DURATION": 0.05, 
 	"SHOOT_ANIMATION_DURATION": 0.1, 
-	"RELOAD_DURATION": 0.5,
-	"MAX_AMMO": 20,
+	"RELOAD_DURATION": 1.0,
+	"MAX_AMMO": 50,
 	"FULL_AUTO": true,
 	"CHARGEABLE": false}
 
 const BULLET_SODA = {
-	"DAMAGE": 25,
+	"DAMAGE": 10,
 	"RICOCHET": 1,
 	"BULLET_DURATION": 0.5, 
 	"BULLET_GRAVITY_MODIFIER": 0, 
-	"BULLET_SPEED": 2000, 
-	"BULLET_DECCEL_MODIFIER": 3500,
+	"BULLET_SPEED": 2500, 
+	"BULLET_DECCEL_MODIFIER": 4000,
 	"BULLET_INERTIA": 1,
 	"BULLET_IFRAME_DURATION": 0.2,
 	"FRAGILE_BOUNCE": true,
@@ -29,13 +29,13 @@ const BULLET_SODA = {
 
 # Stats for Soap bubble
 const STATS_SOAP = {
-	"HEALTH": 750,
-	"SPEED": 800, 
+	"HEALTH": 500,
+	"SPEED": 650, 
 	"JUMP_VELOCITY": -600, 
 	"SLIDE_SPEED": 1200, 
 	"SLIDE_DURATION": 0.375, 
 	"SLIDE_GRAVITY": 1500, 
-	"SHOOT_COOLDOWN_DURATION": 0.25, 
+	"SHOOT_COOLDOWN_DURATION": 0.2, 
 	"SHOOT_ANIMATION_DURATION": 0.3, 
 	"RELOAD_DURATION": 0.5,
 	"MAX_AMMO": 10,
@@ -43,8 +43,8 @@ const STATS_SOAP = {
 	"CHARGEABLE": false}
 
 const BULLET_SOAP = {
-	"DAMAGE": 100,
-	"RICOCHET": 3,
+	"DAMAGE": 65,
+	"RICOCHET": 5,
 	"BULLET_DURATION": 8, 
 	"BULLET_GRAVITY_MODIFIER": 0.5, 
 	"BULLET_SPEED": 500, 
@@ -56,22 +56,22 @@ const BULLET_SOAP = {
 
 # Stats for Gum bubble
 const STATS_GUM = {
-	"HEALTH": 1000,
-	"SPEED": 600, 
+	"HEALTH": 500,
+	"SPEED": 500, 
 	"JUMP_VELOCITY": -600, 
 	"SLIDE_SPEED": 1200, 
 	"SLIDE_DURATION": 0.375, 
 	"SLIDE_GRAVITY": 1500, 
 	"SHOOT_COOLDOWN_DURATION": 0.5, 
 	"SHOOT_ANIMATION_DURATION": 0.2, 
-	"RELOAD_DURATION": 0.5,
+	"RELOAD_DURATION": 1.0,
 	"MAX_AMMO": 5,
 	"FULL_AUTO": false,
 	"CHARGEABLE": true}
 
 const BULLET_GUM = {
-	"DAMAGE": 300,
-	"RICOCHET": 3,
+	"DAMAGE": 250,
+	"RICOCHET": 8,
 	"BULLET_DURATION": 5, 
 	"BULLET_GRAVITY_MODIFIER": 1.0, 
 	"BULLET_SPEED": 250, 
@@ -83,9 +83,13 @@ const BULLET_GUM = {
 
 const COYOTE_LENIENCY = 0.2
 const BUBBLE_STATE_DURATION = 3.0 # 3 seconds
-const HIT_DURATION = 0.3
 
 signal defeat(id:int)
+signal max_health(id:int, max_health:int)
+signal health_update(id:int, current_health:int)
+signal ammo_update(id:int, current_ammo:int)
+signal bubbled_update(id:int, BUBBLE_STATE_DURATION)
+const HIT_DURATION = 0.3
 
 var left_ground_counter = 0
 var double_jumps_left = 1
@@ -95,13 +99,22 @@ var should_be_facing_right = true
 var legs_face_right = true
 var sliding = false
 var slide_timer = 0.0
-var shooting = false
 var shoot_cooldown = 0
 var shoot_animation_timer = 0.0
 var reloading = false
 var reload_timer = 0.0
 var is_bubbled = false
 var bubble_timer = 0.0
+var popped_free = false
+var bursted = false
+var bubble_emitted = false
+
+# Has windup animation played yet
+var woundup = false
+# Has shoot button been released
+var released = false
+# Is character in shooting state
+var shooting = false
 var is_hit = false
 var hit_timer = 0.0
 
@@ -182,19 +195,24 @@ func _ready():
 	#Sets initial position, size
 	global_position = init_pos
 	scale = player_scale
-	
+	randomize()
 	Global.connect("on_damage", damage_function)
 	
 	#Gives stats based on selected weapon
-	if character_selected == "scubahood":
+	if character_selected == "dagon":
 		player_stats = STATS_SODA
-	elif character_selected == "dagon":
+	elif character_selected == "scubahood":
 		player_stats = STATS_SOAP
 	else:
 		player_stats = STATS_GUM
-		
+	
+	max_health.emit(player_nb, player_stats["HEALTH"])
+	
 	# Hide bubble state
 	bubble_state.visible = false
+	upper_body_sprite.visible = true
+	lower_body_sprite.visible = true
+	middle_body_part.visible = true
 	
 	current_health = player_stats["HEALTH"]
 	bullets_left = player_stats["MAX_AMMO"]
@@ -202,18 +220,24 @@ func _ready():
 
 func _physics_process(delta):
 	
+	if bursted == true:
+		bubble_state.play("death")
+		if bubble_state.get_frame() == 10:
+			queue_free()
+		return
+	
+	# Handles natural health regen
+	regen_timer += 1
+	if regen_timer >= 150:
+		if current_health < player_stats["HEALTH"] && is_bubbled == false:
+			current_health += 1
+
 	# Handles hit timer
 	if is_hit:
 		hit_timer -= delta
 		if hit_timer <= 0:
 			hit_timer = 0.0
 			is_hit = false
-	
-	# Handles natural health regen
-	regen_timer += 1
-	if regen_timer >= 30:
-		if current_health < player_stats["HEALTH"]:
-			current_health += 1
 	
 	# Handle reticle
 	face_right = reticle.global_position.x > global_position.x
@@ -229,8 +253,6 @@ func _physics_process(delta):
 	# Handle reload.
 	if reloading:
 		reload_timer -= delta
-		if reload_timer <= 0:
-			reloading = false
 
 	# Handle Slide.
 	if sliding:
@@ -278,149 +300,355 @@ func _physics_process(delta):
 		lower_body_sprite.flip_h = true
 		legs_face_right = false
 		
-	# Handle shoot cooldown
-	if(shoot_cooldown > 0):
-		shoot_cooldown -= delta
-
-# HANDLES CHARGED FIRE (GUM)
-	if player_stats["CHARGEABLE"] == true:
-		if Input.is_action_pressed("shoot_bullet"+str(player_nb)):
-			if bullets_left > 0 && shoot_cooldown <= 0:
-				charge_timer += 1
-		else: 
-			if charge_timer >= 10:
-				bullets_left -= 1
-				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"] + charge_timer
-				shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
-				charge_timer = 0
-				#upper_body_sprite.play("shoot")
-				shoot_bullet(charge_timer)
-				move_and_slide()
-				if bullets_left <= 1:
-					display_state_ammo("RELOAD" , true)
-				return
-			else: 
-				charge_timer = 0
-
-
-# HANDLES AUTO FIRE (SODA)
-	elif player_stats["FULL_AUTO"] == true:
-		if Input.is_action_pressed("shoot_bullet"+str(player_nb)):
-			if bullets_left > 0 && shoot_cooldown <= 0:
-				bullets_left -= 1
-				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
-				shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
-				#upper_body_sprite.play("shoot")
-				shoot_bullet(charge_timer)
-				move_and_slide()
-				if bullets_left <= 1:
-					display_state_ammo("RELOAD" , true)
-				return
-
-
-# HANDLE SEMI-AUTO (SOAP)
-	else: 
-		if Input.is_action_just_pressed("shoot_bullet"+str(player_nb)):
-			if bullets_left > 0 && shoot_cooldown <= 0:
-				bullets_left -= 1
-				#HUD_bullet_left.set_text(str(bullets_left))
-				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
-				shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
-				#upper_body_sprite.play("shoot")
-				shoot_bullet(0)
-				move_and_slide()
-				if bullets_left <= 1:
-					display_state_ammo("RELOAD" , true)
-				return
-
-
-	# Trigger & Handle shoot.
-			
-	# Trigger reload.
-	if Input.is_action_just_pressed("reload"+str(player_nb)):
-		bullets_left = player_stats["MAX_AMMO"]
-		reloading = true
-		reload_timer = player_stats["RELOAD_DURATION"]
-		upper_body_sprite.play(character_selected + "_reload")
-		play_sound("reload")
-		move_and_slide()
-		display_state_ammo("OK!!!" , false)
-		return
-		
 	# Trigger slide.
 	if Input.is_action_just_pressed("slide"+str(player_nb)) and velocity.x != 0 and is_on_floor():
 		sliding = true
 		slide_timer = player_stats["SLIDE_DURATION"]
 		lower_body_collision_shape.disabled = true
 		lower_body_sprite.play(character_selected + "_slide")
-		play_sound("running")
 		velocity.x = player_stats["SLIDE_SPEED"] * (1 if face_right else -1)
 		move_and_slide()
 		return
+		
+	# Handle shoot cooldown
+	if(shoot_cooldown > 0):
+		shoot_cooldown -= delta
+
+# HANDLES CHARGED FIRE (GUM)
+	if player_stats["CHARGEABLE"] == true:
 	
+		if Input.is_action_pressed("shoot_bullet"+str(player_nb)):
+			if bullets_left > 0 && shoot_cooldown <= 0:
+				charge_timer += 1
+				shooting = true
+				if upper_body_sprite.get_frame() == 0:
+					released = false
+
+		if Input.is_action_just_released("shoot_bullet"+str(player_nb)) || charge_timer > 150:
+			if charge_timer >= 25:
+				released = true
+				shoot_bullet(charge_timer)
+				move_and_slide()
+				bullets_left -= 1
+				charge_timer = 0
+				if bullets_left <= 1:
+					display_state_ammo("RELOAD" , true)
+			#If not charged for long enough
+			else: 
+				shoot_animation_timer = 0
+				charge_timer = 0
+				shooting = false
+
+# HANDLES AUTO FIRE (SODA)
+	elif player_stats["FULL_AUTO"] == true:
+		if Input.is_action_pressed("shoot_bullet"+str(player_nb)):
+			if bullets_left > 0 && shoot_cooldown <= 0:
+				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
+				shooting = true
+				woundup = false
+				released = false
+				shoot_bullet(0)
+				move_and_slide()
+				bullets_left -= 1
+		if Input.is_action_just_released("shoot_bullet"+str(player_nb)) || bullets_left <= 0:
+			if bullets_left <= 1:
+				display_state_ammo("RELOAD" , true)
+			released = true
+
+# HANDLE SEMI-AUTO (SOAP)
+	else: 
+		if Input.is_action_just_pressed("shoot_bullet"+str(player_nb)):
+			if bullets_left > 0 && shoot_cooldown <= 0:
+				#HUD_bullet_left.set_text(str(bullets_left))
+				shoot_cooldown = player_stats["SHOOT_COOLDOWN_DURATION"]
+				shoot_animation_timer = player_stats["SHOOT_ANIMATION_DURATION"]
+				#upper_body_sprite.play("shoot")
+				shoot_bullet(0)
+				move_and_slide()
+				bullets_left -= 1
+				if bullets_left <= 1:
+					display_state_ammo("RELOAD" , true)
+	
+	# Trigger reload.
+	if Input.is_action_just_pressed("reload"+str(player_nb)) && shoot_animation_timer <= 0 && shooting == false && reloading == false:
+		reloading = true
+		reload_timer = player_stats["RELOAD_DURATION"]
+		upper_body_sprite.play(character_selected + "_reload")
+		move_and_slide()
+		display_state_ammo("OK!!!" , false)
+	
+	# Complete reload (only replenishes bullets after duration
+	if reloading == true && reload_timer <= 0:
+		bullets_left = player_stats["MAX_AMMO"]
+		reloading = false
+
 	# Handle bubble state.
-	# unfinished!!!
 	if is_bubbled:
 		bubble_timer -= delta
 		if bubble_timer <= 0:
 			sliding = false
 			lower_body_collision_shape.disabled = false
-		else:
-			velocity = Vector2.ZERO
-			move_and_slide()
-			return
+			self.set_collision_layer_value(3, false)
+			self.set_collision_mask_value(2, false)
+			self.set_collision_mask_value(3, false)
+			current_health = 300
+			regen_timer = 0
+			popped_free = true
+			bubble_emitted == false
 			
-	# Trigger bubblestate.
-	# Use same as slide logic or something
-
-	# Handle HP and bubbling
-	if current_health <= 0: 
-		defeat.emit(player_nb)
-		current_health = player_stats["HEALTH"]
+		else:
+			if bubble_emitted == false:
+				bubbled_update.emit(player_nb, BUBBLE_STATE_DURATION)
+				bubble_emitted == true
+			velocity = Vector2.ZERO
+			var bubble_entity = move_and_collide(velocity)
+			self.set_collision_layer_value(3, true)
+			self.set_collision_mask_value(2, true)
+			self.set_collision_mask_value(3, true)
+			
+			if bubble_entity:
+				if bubble_entity.get_collider().get_collision_layer_value(3) == true: 
+					velocity = velocity.bounce(bubble_entity.get_normal())
+				elif bubble_entity.get_collider().get_collision_layer_value(2) == true:
+					bursted = true
+					defeat.emit(player_nb)
 	
-	# Handle animations.
-	if not is_on_floor() and not is_double_jumping:
+	# UI UPDATES
+	health_update.emit(player_nb, current_health)
+	ammo_update.emit(player_nb, bullets_left)
+	
+	#Bubble state sprite handler
+	if is_bubbled:
+		bubble_state.visible = true
+		upper_body_sprite.visible = false
+		lower_body_sprite.visible = false
+		middle_body_part.visible = false
+	
+	else:
+		bubble_state.visible = false
+		upper_body_sprite.visible = true
+		lower_body_sprite.visible = true
+		middle_body_part.visible = true
+	
+	# ALL ANIMATIONS BELOW
+	
+	if popped_free == true:
+		bubble_state.play(character_selected + "_pop")
+		if bubble_state.get_frame() == 5:
+			popped_free = false
+			is_bubbled = false
+			
+	elif is_bubbled == true:
+		bubble_state.play(character_selected + "_bubbletrapped")
+		
+	elif not is_on_floor() and not is_double_jumping:
 		lower_body_sprite.play(character_selected + "_jump")
+		
+				#SEMI-AUTO ATTACK ANIM
+		# If shooting as Scubahood
+		if shoot_animation_timer > 0 == true && character_selected == "scubahood":
+			shoot_animation_timer -= delta
+			upper_body_sprite.play(character_selected + "_shoot")
+		
+		#CHARGED ATTACK ANIM
+		# If shooting as Colossus
+		elif shooting == true && character_selected == "collosus":
+			#While still charging/bullet not released
+			if released == false:
+				upper_body_sprite.play("collosus_shoot")
+				upper_body_sprite.speed_scale = 0.1
+			#When bullet released
+			elif released == true:
+				upper_body_sprite.play("collosus_shoot_release")
+				#After animation plays through fully once
+				upper_body_sprite.speed_scale = 1
+				if upper_body_sprite.get_frame() == 2:
+					shooting = false
+					released = false
+		
+		#FULL AUTO ATTACK ANIM
+		# If shooting as Dagon
+		elif shooting == true && character_selected == "dagon":
+			#If startup animation hasn't been played yet, play startup animation
+			if released == false && woundup == false:
+				upper_body_sprite.play("dagon_shoot")
+				if upper_body_sprite.get_frame() == 3:
+					woundup == true
+			#After startup animation plays
+			elif released == false && woundup == true:
+				upper_body_sprite.play("dagon_shoot_hold")
+			elif released == true:
+				upper_body_sprite.play("dagon_shoot_release")
+				#After animation plays through fully once
+				if upper_body_sprite.get_frame() == 3:
+					shooting = false
+					released = false
+			
+		elif reloading:
+			upper_body_sprite.play(character_selected + "_reload")
+		
+	elif not is_on_floor() and is_double_jumping:
+		lower_body_sprite.play(character_selected + "_double_jump")
+		
+		#SEMI-AUTO ATTACK ANIM
+		# If shooting as Scubahood
+		if shoot_animation_timer > 0 == true && character_selected == "scubahood":
+			shoot_animation_timer -= delta
+			upper_body_sprite.play(character_selected + "_shoot")
+		
+		#CHARGED ATTACK ANIM
+		# If shooting as Colossus
+		elif shooting == true && character_selected == "collosus":
+			#While still charging/bullet not released
+			if released == false:
+				upper_body_sprite.play("collosus_shoot")
+				upper_body_sprite.speed_scale = 0.1
+			#When bullet released
+			elif released == true:
+				upper_body_sprite.play("collosus_shoot_release")
+				#After animation plays through fully once
+				upper_body_sprite.speed_scale = 1
+				if upper_body_sprite.get_frame() == 2:
+					shooting = false
+					released = false
+		
+		#FULL AUTO ATTACK ANIM
+		# If shooting as Dagon
+		elif shooting == true && character_selected == "dagon":
+			#If startup animation hasn't been played yet, play startup animation
+			if released == false && woundup == false:
+				upper_body_sprite.play("dagon_shoot")
+				if upper_body_sprite.get_frame() == 3:
+					woundup == true
+			#After startup animation plays
+			elif released == false && woundup == true:
+				upper_body_sprite.play("dagon_shoot_hold")
+			elif released == true:
+				upper_body_sprite.play("dagon_shoot_release")
+				#After animation plays through fully once
+				if upper_body_sprite.get_frame() == 3:
+					shooting = false
+					released = false
+			
+		elif reloading:
+			upper_body_sprite.play(character_selected + "_reload")
+		else: 
+			upper_body_sprite.play(character_selected + "_bubble_jump")
+
+
 	elif velocity.x == 0 and is_on_floor():
-		if not is_hit:
-			if shooting || shoot_animation_timer > 0:
-				shoot_animation_timer -= delta
-				upper_body_sprite.play(character_selected + "_shoot")
-				play_sound("shoot")
-			elif reloading:
-				upper_body_sprite.play(character_selected + "_reload")
-				play_sound("reload")
-			else:
-				upper_body_sprite.play(character_selected + "_idle")
+		
+		#SEMI-AUTO ATTACK ANIM
+		# If shooting as Scubahood
+		if shoot_animation_timer > 0 == true && character_selected == "scubahood":
+			shoot_animation_timer -= delta
+			upper_body_sprite.play(character_selected + "_shoot")
+		
+		#CHARGED ATTACK ANIM
+		# If shooting as Colossus
+		elif shooting == true && character_selected == "collosus":
+			#While still charging/bullet not released
+			if released == false:
+				upper_body_sprite.play("collosus_shoot")
+				upper_body_sprite.speed_scale = 0.1
+			#When bullet released
+			elif released == true:
+				upper_body_sprite.play("collosus_shoot_release")
+				#After animation plays through fully once
+				upper_body_sprite.speed_scale = 1
+				if upper_body_sprite.get_frame() == 2:
+					shooting = false
+					released = false
+		
+		#FULL AUTO ATTACK ANIM
+		# If shooting as Dagon
+		elif shooting == true && character_selected == "dagon":
+			#If startup animation hasn't been played yet, play startup animation
+			if released == false && woundup == false:
+				upper_body_sprite.play("dagon_shoot")
+				if upper_body_sprite.get_frame() == 3:
+					woundup == true
+			#After startup animation plays
+			elif released == false && woundup == true:
+				upper_body_sprite.play("dagon_shoot_hold")
+			elif released == true:
+				upper_body_sprite.play("dagon_shoot_release")
+				#After animation plays through fully once
+				if upper_body_sprite.get_frame() == 3:
+					shooting = false
+					released = false
+			
+		elif reloading:
+			upper_body_sprite.play(character_selected + "_reload")
+
+		else:
+			upper_body_sprite.play(character_selected + "_idle")
 		lower_body_sprite.play(character_selected + "_idle")
+	
 	elif velocity.x != 0 and is_on_floor():
-		if not is_hit:
-			if shooting || shoot_animation_timer > 0:
-				shoot_animation_timer -= delta
-				upper_body_sprite.play(character_selected + "_shoot")
-				play_sound("shoot")
-			elif reloading:
-				upper_body_sprite.play(character_selected + "_reload")
-				play_sound("reload")
-			else:
-				upper_body_sprite.play(character_selected + "_default")
+		
+				#SEMI-AUTO ATTACK ANIM
+		# If shooting as Scubahood
+		if shoot_animation_timer > 0 == true && character_selected == "scubahood":
+			shoot_animation_timer -= delta
+			upper_body_sprite.play(character_selected + "_shoot")
+		
+		#CHARGED ATTACK ANIM
+		# If shooting as Colossus
+		elif shooting == true && character_selected == "collosus":
+			#While still charging/bullet not released
+			if released == false:
+				upper_body_sprite.play("collosus_shoot")
+				upper_body_sprite.speed_scale = 0.1
+			#When bullet released
+			elif released == true:
+				upper_body_sprite.play("collosus_shoot_release")
+				#After animation plays through fully once
+				upper_body_sprite.speed_scale = 1
+				if upper_body_sprite.get_frame() == 2:
+					shooting = false
+					released = false
+		
+		#FULL AUTO ATTACK ANIM
+		# If shooting as Dagon
+		elif shooting == true && character_selected == "dagon":
+			#If startup animation hasn't been played yet, play startup animation
+			if released == false && woundup == false:
+				upper_body_sprite.play("dagon_shoot")
+				if upper_body_sprite.get_frame() == 3:
+					woundup == true
+			#After startup animation plays
+			elif released == false && woundup == true:
+				upper_body_sprite.play("dagon_shoot_hold")
+			elif released == true:
+				upper_body_sprite.play("dagon_shoot_release")
+				#After animation plays through fully once
+				if upper_body_sprite.get_frame() == 3:
+					shooting = false
+					released = false
+			
+		elif reloading:
+			upper_body_sprite.play(character_selected + "_reload")
+		else:
+			upper_body_sprite.play(character_selected + "_default")
 		lower_body_sprite.play(character_selected + "_run")
-		play_sound("running")
 
 	move_and_slide()
 
 # Handles player taking damage
 func damage_function(dmg_source:Bullet):
 	if dmg_source.shooter != player_nb:
+		var damage_taken = (dmg_source.stats_bullet["DAMAGE"] + dmg_source.charge_boost)
+		current_health -= damage_taken
 		upper_body_sprite.play(character_selected + "_hit")
 		is_hit = true
 		hit_timer = HIT_DURATION
-		current_health -= (dmg_source.stats_bullet["DAMAGE"] + dmg_source.charge_boost)
 		regen_timer = 0
 		print(current_health)
 		if current_health <= 0:
 			# Bubble state in effect
-			bubble_state = true
+			is_bubbled = true
+			bubble_timer = BUBBLE_STATE_DURATION
 
 # Create and shoot a bullet
 func shoot_bullet(charge:int):
@@ -430,17 +658,22 @@ func shoot_bullet(charge:int):
 	if character_selected == "dagon":
 		bullet = soda_bullet.instantiate()
 		bullet.stats_bullet = BULLET_SODA
+		var bullet_angle_vec = Vector2((reticle.global_position.x + ((randi() % 75 + 50) - 125)*5 - muzzle.global_position.x), (reticle.global_position.y + ((randi() % 75 + 50) - 125)*5 - muzzle.global_position.y))
+		var bullet_direction = bullet_angle_vec.angle()
+		bullet.dir = bullet_direction
 	elif character_selected == "scubahood":
 		bullet = soap_bullet.instantiate()
 		bullet.stats_bullet = BULLET_SOAP
+		var bullet_angle_vec = Vector2((reticle.global_position.x - muzzle.global_position.x), (reticle.global_position.y - muzzle.global_position.y))
+		var bullet_direction = bullet_angle_vec.angle()
+		bullet.dir = bullet_direction
 	else:
 		bullet = gum_bullet.instantiate()
 		bullet.stats_bullet = BULLET_GUM
 		bullet.charge_boost += charge
-	
-	var bullet_angle_vec = Vector2((reticle.global_position.x - muzzle.global_position.x), (reticle.global_position.y - muzzle.global_position.y))
-	var bullet_direction = bullet_angle_vec.angle()
-	bullet.dir = bullet_direction
+		var bullet_angle_vec = Vector2((reticle.global_position.x - muzzle.global_position.x), (reticle.global_position.y - muzzle.global_position.y))
+		var bullet_direction = bullet_angle_vec.angle()
+		bullet.dir = bullet_direction
 	bullet.pos = muzzle.global_position
 	bullet.rot = muzzle.global_rotation
 	bullet.shooter = player_nb
