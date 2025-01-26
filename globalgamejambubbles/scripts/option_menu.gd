@@ -3,6 +3,7 @@ extends Control
 signal cancel
  
 var master_bus = AudioServer.get_bus_index("Master")
+@onready var menu_sfx = $AudioStreamPlayer2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,6 +17,7 @@ func _process(delta: float) -> void:
 
 
 func _on_cancel_button_up() -> void:
+	menu_sfx.play()
 	cancel.emit()
 
 

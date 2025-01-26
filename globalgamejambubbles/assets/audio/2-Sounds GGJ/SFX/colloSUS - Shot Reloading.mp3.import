@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dwbdh6pkv8jwf"
+path="res://.godot/imported/colloSUS - Shot Reloading.mp3-b2398f33360199570041a4ba263c8be1.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/2-Sounds GGJ/SFX/colloSUS - Shot Reloading.mp3"
+dest_files=["res://.godot/imported/colloSUS - Shot Reloading.mp3-b2398f33360199570041a4ba263c8be1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

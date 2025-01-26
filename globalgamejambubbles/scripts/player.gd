@@ -89,6 +89,9 @@ signal max_health(id:int, max_health:int)
 signal health_update(id:int, current_health:int)
 signal ammo_update(id:int, current_ammo:int)
 signal bubbled_update(id:int, BUBBLE_STATE_DURATION)
+const HIT_DURATION = 0.3
+
+signal defeat(id:int)
 
 var left_ground_counter = 0
 var double_jumps_left = 1
@@ -114,6 +117,8 @@ var woundup = false
 var released = false
 # Is character in shooting state
 var shooting = false
+var is_hit = false
+var hit_timer = 0.0
 
 # Local var for character selected
 var character_selected = "scubahood"
@@ -134,6 +139,17 @@ var charge_timer = 0
 # Player current ammo, set to MAX_AMMO
 var bullets_left = player_stats["MAX_AMMO"]
 
+# Loading sound effects
+var running_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/1-Running.mp3")
+var jump_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/2-Jumping.mp3")
+var hit_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Taking damage.mp3")
+var death_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Death sfx.mp3")
+var collosus_shoot_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/colloSUS - Shot Firing.mp3")
+var collosus_reload_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/colloSUS - Shot Reloading.mp3")
+var dagon_shoot_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Dagon - Shot Firing.mp3")
+var dagon_reload_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Dagon - Shot Reloading.mp3")
+var scubahood_shoot_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Scubahood - Shot Firing.mp3")
+var scubahood_reload_sfx = preload("res://assets/audio/2-Sounds GGJ/SFX/Scubahood - Shot Reloading.mp3")
 
 @onready var upper_body = $UpperBody
 @onready var upper_body_sprite = $UpperBody/UpperBodySprite
@@ -148,6 +164,7 @@ var bullets_left = player_stats["MAX_AMMO"]
 @onready var label_state_ammo = $reload_message
 @onready var middle_body_part = $Sprite2D
 @onready var bubble_state = $BubbleStates
+@onready var sound_effects = $SoundEffects
 
 func _ready():
 	# Set reticle inputs
@@ -216,6 +233,13 @@ func _physics_process(delta):
 	if regen_timer >= 150:
 		if current_health < player_stats["HEALTH"] && is_bubbled == false:
 			current_health += 1
+
+	# Handles hit timer
+	if is_hit:
+		hit_timer -= delta
+		if hit_timer <= 0:
+			hit_timer = 0.0
+			is_hit = false
 	
 	# Handle reticle
 	face_right = reticle.global_position.x > global_position.x
@@ -257,8 +281,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump" + str(player_nb)):
 		if is_on_floor() || left_ground_counter <= COYOTE_LENIENCY:
 			lower_body_sprite.play(character_selected + "_jump")
+			play_sound("jump")
 			velocity.y = player_stats["JUMP_VELOCITY"]
 		elif double_jumps_left > 0:
+			upper_body_sprite.play(character_selected + "_bubble_jump")
+			lower_body_sprite.play(character_selected + "_double_jump")
+			play_sound("jump")
 			velocity.y = player_stats["JUMP_VELOCITY"]
 			double_jumps_left -= 1
 			is_double_jumping = true
@@ -614,6 +642,9 @@ func damage_function(dmg_source:Bullet):
 	if dmg_source.shooter != player_nb:
 		var damage_taken = (dmg_source.stats_bullet["DAMAGE"] + dmg_source.charge_boost)
 		current_health -= damage_taken
+		upper_body_sprite.play(character_selected + "_hit")
+		is_hit = true
+		hit_timer = HIT_DURATION
 		regen_timer = 0
 		print(current_health)
 		if current_health <= 0:
@@ -658,3 +689,30 @@ func display_state_ammo(message:String , display:bool):
 		label_state_ammo.set_text("OK!!!")
 		await get_tree().create_timer(0.5).timeout
 		label_state_ammo.set_visible(false)
+		
+# Function to handle SFX
+func play_sound(sound_name):
+	match sound_name:
+		"running":
+			$SoundEffects.stream = running_sfx
+		"jump":
+			$SoundEffects.stream = jump_sfx
+		"hit":
+			$SoundEffects.stream = hit_sfx
+		"death":
+			$SoundEffects.stream = death_sfx
+		"shoot_sfx":
+			if character_selected == "scubahood":
+				$SoundEffects.stream = scubahood_shoot_sfx
+			elif character_selected == "collosus":
+				$SoundEffects.stream = collosus_shoot_sfx
+			elif character_selected == "dagon":
+				$SoundEffects.stream = dagon_shoot_sfx
+		"reload":
+			if character_selected == "scubahood":
+				$SoundEffects.stream = scubahood_reload_sfx
+			elif character_selected == "collosus":
+				$SoundEffects.stream = collosus_reload_sfx
+			elif character_selected == "dagon":
+				$SoundEffects.stream = dagon_reload_sfx
+	$SoundEffects.play()

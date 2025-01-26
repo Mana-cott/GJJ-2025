@@ -9,7 +9,7 @@ extends Control
 @onready var weapon_label2 = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Weapon_Label2
 @onready var character_label = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Character_Label
 @onready var character_label2 = $MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Character_Label2
-
+@onready var menu_sfx = $SoundEffects
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,6 +21,7 @@ func _process(delta):
 	pass
 
 func _on_toggle_look_mode_pressed():
+	menu_sfx.play()
 	if Global.look_mode == "mouse":
 		Global.look_mode = "arrowkeys"
 		toggle_look_mode_button.text = "P1 Aim: Arrow Keys"
@@ -30,47 +31,59 @@ func _on_toggle_look_mode_pressed():
 	
 
 func _on_play_pressed():
+	menu_sfx.play()
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _on_controls_pressed() -> void:
+	menu_sfx.play()
 	controlMenu.set_visible(true)
 	marginContainer.set_visible(false)
 
 func _on_option_pressed() -> void:
+	menu_sfx.play()
 	optionMenu.set_visible(true)
 	marginContainer.set_visible(false)
 
 
 func _on_quit_pressed() -> void:
+	menu_sfx.play()
 	get_tree().quit() # Replace with function body.
 
 
 func _on_option_menu_cancel() -> void:
+	menu_sfx.play()
 	optionMenu.set_visible(false)
 	marginContainer.set_visible(true) # Replace with function body.
 
 # Character select p1
 func _on_scubahood_pressed():
+	menu_sfx.play()
 	Global.character_p1 = "scubahood"
 	character_label.text = "Player 1 Character: SCUBAHOOD"
 func _on_dagon_pressed():
+	menu_sfx.play()
 	Global.character_p1 = "dagon"
 	character_label.text = "Player 1 Character: DAGON"
 func _on_collosus_of_rhodes_pressed():
+	menu_sfx.play()
 	Global.character_p1 = "collosus"
 	character_label.text = "Player 1 Character: COLOSSUS OF RHODES"
 
 # Character select p2
 func _on_scubahood_2_pressed():
+	menu_sfx.play()
 	Global.character_p2 = "scubahood"
 	character_label2.text = "Player 2 Character: SCUBAHOOD"
 func _on_dagon_2_pressed():
+	menu_sfx.play()
 	Global.character_p2 = "dagon"
 	character_label2.text = "Player 2 Character: DAGON"
 func _on_collosus_of_rhodes_2_pressed():
+	menu_sfx.play()
 	Global.character_p2 = "collosus"
 	character_label2.text = "Player 2 Character: COLOSSUS OF RHODES"
 
 func _on_control_menu_cancel() -> void:
+	menu_sfx.play()
 	controlMenu.set_visible(false)
 	marginContainer.set_visible(true)

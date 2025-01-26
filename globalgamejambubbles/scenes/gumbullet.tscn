@@ -1,10 +1,55 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3eu0r0bjxa1k"]
+[gd_scene load_steps=12 format=3 uid="uid://d3eu0r0bjxa1k"]
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_isdx3"]
 [ext_resource type="Texture2D" uid="uid://bam67v54rdean" path="res://assets/sprites/bubblegum_bubble.png" id="2_78fru"]
+[ext_resource type="Texture2D" uid="uid://qhee3kpk0ui2" path="res://assets/sprites/bubblegum_default_pop.png" id="3_wm3ie"]
+[ext_resource type="AudioStream" uid="uid://cx4n4a1ewfybv" path="res://assets/audio/2-Sounds GGJ/SFX/Bubble Popping.mp3" id="4_3slkg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxabb"]
 radius = 50.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dji7"]
+atlas = ExtResource("3_wm3ie")
+region = Rect2(0, 0, 87, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3fpn"]
+atlas = ExtResource("3_wm3ie")
+region = Rect2(87, 0, 87, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqaic"]
+atlas = ExtResource("3_wm3ie")
+region = Rect2(174, 0, 87, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yl86i"]
+atlas = ExtResource("3_wm3ie")
+region = Rect2(261, 0, 87, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqrqy"]
+atlas = ExtResource("3_wm3ie")
+region = Rect2(348, 0, 87, 93)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cubu0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dji7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w3fpn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqaic")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yl86i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jqrqy")
+}],
+"loop": true,
+"name": &"pop",
+"speed": 12.0
+}]
 
 [node name="Bullet" type="CharacterBody2D"]
 collision_layer = 4
@@ -25,5 +70,17 @@ shape = SubResource("CircleShape2D_oxabb")
 wait_time = 5.0
 one_shot = true
 autostart = true
+
+[node name="BulletPop" type="AnimatedSprite2D" parent="."]
+position = Vector2(-0.906255, 3.59375)
+scale = Vector2(1.26652, 1.26008)
+sprite_frames = SubResource("SpriteFrames_cubu0")
+animation = &"pop"
+frame_progress = 0.861791
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_3slkg")
+volume_db = 24.0
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

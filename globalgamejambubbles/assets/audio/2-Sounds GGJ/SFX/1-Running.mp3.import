@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://byn02ve4etx33"
+path="res://.godot/imported/1-Running.mp3-1b6b79a7b2d95a61c5dddc3a6394b80e.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/2-Sounds GGJ/SFX/1-Running.mp3"
+dest_files=["res://.godot/imported/1-Running.mp3-1b6b79a7b2d95a61c5dddc3a6394b80e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
