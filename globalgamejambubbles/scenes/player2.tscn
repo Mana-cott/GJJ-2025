@@ -1,12 +1,11 @@
-[gd_scene load_steps=108 format=3 uid="uid://dvp6hyukhbtu0"]
+[gd_scene load_steps=107 format=3 uid="uid://bu7crmrddrnvj"]
 
-[ext_resource type="Script" path="res://scripts/player_2.gd" id="1_3iic2"]
 [ext_resource type="Texture2D" uid="uid://bg8c7m30kv2qf" path="res://assets/sprites/scubahood_legs_complete.png" id="1_aecqb"]
 [ext_resource type="Texture2D" uid="uid://dmjplskc8purj" path="res://assets/sprites/scubahood_torso_complete.png" id="2_4i2c5"]
 [ext_resource type="Texture2D" uid="uid://vrfvvjaekgpl" path="res://assets/sprites/collosus_of_rhodes_legs_complete.png" id="2_5ihuj"]
 [ext_resource type="Texture2D" uid="uid://dirk3sbss88ko" path="res://assets/sprites/dagon_legs_complete.png" id="3_visrc"]
 [ext_resource type="Texture2D" uid="uid://bmaptiqufccdo" path="res://assets/sprites/body_blocker.png" id="4_dmle8"]
-[ext_resource type="PackedScene" uid="uid://bdh64wobe485i" path="res://scenes/reticle2.tscn" id="5_bmcke"]
+[ext_resource type="PackedScene" uid="uid://bhagepifjet6f" path="res://scenes/reticle2.tscn" id="5_bmcke"]
 [ext_resource type="Texture2D" uid="uid://mgv85mnhibuo" path="res://assets/sprites/collosus_of_rhodes_torso_complete.png" id="5_mh764"]
 [ext_resource type="Texture2D" uid="uid://c41hcv8rkivc" path="res://assets/sprites/dagon_torso_complete.png" id="6_kr4v4"]
 
@@ -898,7 +897,6 @@ height = 34.0
 size = Vector2(26, 10)
 
 [node name="Player2" type="CharacterBody2D"]
-script = ExtResource("1_3iic2")
 
 [node name="LowerBodySprite" type="AnimatedSprite2D" parent="."]
 z_index = 3
@@ -915,7 +913,7 @@ position = Vector2(0, -1)
 position = Vector2(1.78814e-07, -10)
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_uu3pv")
-animation = &"load"
+animation = &"collosus_shoot"
 offset = Vector2(2.5, 0)
 
 [node name="SignifierRayCast" type="RayCast2D" parent="UpperBody"]

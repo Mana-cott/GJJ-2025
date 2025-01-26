@@ -1,13 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://bdh64wobe485i"]
+[gd_scene load_steps=4 format=3 uid="uid://bhagepifjet6f"]
 
 [ext_resource type="Texture2D" uid="uid://jg2vryan2uue" path="res://assets/sprites/reticle.png" id="1_88p8h"]
-[ext_resource type="Script" path="res://scripts/reticle_2.gd" id="1_f7knh"]
+
+[sub_resource type="GDScript" id="GDScript_mfoit"]
+script/source = "extends CharacterBody2D
+
+const SPEED = 1000
+
+var current_pos = Vector2.ZERO
+
+func _physics_process(delta):
+	
+	velocity = Vector2.ZERO
+	# Handle movement
+	if Input.is_action_pressed(\"look_up_p2\"):
+		velocity.y -= 1 * SPEED
+	if Input.is_action_pressed(\"look_down_p2\"):
+		velocity.y += 1 * SPEED
+	if Input.is_action_pressed(\"look_left_p2\"):
+		velocity.x -= 1 * SPEED
+	if Input.is_action_pressed(\"look_right_p2\"):
+		velocity.x += 1 * SPEED
+		
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * SPEED
+					
+	move_and_slide()
+
+#func _input(event):
+	# Mouse in viewport coordinates.
+	#if event is InputEventMouseMotion:
+"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w32mq"]
 radius = 48.0
 
 [node name="Reticle2" type="CharacterBody2D"]
-script = ExtResource("1_f7knh")
+script = SubResource("GDScript_mfoit")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(2.00165, 2.00165)

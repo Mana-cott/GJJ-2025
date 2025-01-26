@@ -38,26 +38,6 @@ func _on_option_pressed() -> void:
 	optionMenu.set_visible(true)
 	marginContainer.set_visible(false)
 
-func _on_soda_pressed() -> void:
-	Global.weapon_type_p1 = "soda"
-	weapon_label.text = "P1 Currently Selected Bubble: Soda"
-func _on_soap_pressed() -> void:
-	Global.weapon_type_p1 = "soap"
-	weapon_label.text = "P1 Currently Selected Bubble: Soap"
-func _on_gum_pressed() -> void:
-	Global.weapon_type_p1 = "gum"
-	weapon_label.text = "P1 Currently Selected Bubble: Gum"
-	
-func _on_soda2_pressed() -> void:
-	Global.weapon_type_p2 = "soda"
-	weapon_label2.text = "P2 Currently Selected Bubble: Soda"
-func _on_soap2_pressed() -> void:
-	Global.weapon_type_p2 = "soap"
-	weapon_label2.text = "P2 Currently Selected Bubble: Soap"
-func _on_gum2_pressed() -> void:
-	Global.weapon_type_p2 = "gum"
-	weapon_label2.text = "P2 Currently Selected Bubble: Gum"
-
 
 func _on_quit_pressed() -> void:
 	get_tree().quit() # Replace with function body.
@@ -70,21 +50,21 @@ func _on_option_menu_cancel() -> void:
 # Character select p1
 func _on_scubahood_pressed():
 	Global.character_p1 = "scubahood"
-	character_label.text = "Character: SCUBAHOOD"
+	character_label.text = "Player 1 Character: SCUBAHOOD"
 func _on_dagon_pressed():
 	Global.character_p1 = "dagon"
-	character_label.text = "Character: DAGON"
+	character_label.text = "Player 1 Character: DAGON"
 func _on_collosus_of_rhodes_pressed():
 	Global.character_p1 = "collosus"
-	character_label.text = "Character: COLLOSUS OF RHODES"
+	character_label.text = "Player 1 Character: COLOSSUS OF RHODES"
 
 # Character select p2
 func _on_scubahood_2_pressed():
 	Global.character_p2 = "scubahood"
-	character_label2.text = "Character: SCUBAHOOD"
+	character_label2.text = "Player 2 Character: SCUBAHOOD"
 func _on_dagon_2_pressed():
 	Global.character_p2 = "dagon"
-	character_label2.text = "Character: DAGON"
+	character_label2.text = "Player 2 Character: DAGON"
 func _on_collosus_of_rhodes_2_pressed():
 	Global.character_p2 = "collosus"
-	character_label2.text = "Character: COLLOSUS OF RHODES"
+	character_label2.text = "Player 2 Character: COLOSSUS OF RHODES"

@@ -59,19 +59,6 @@ layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="Weapon_Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
-layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 4
-theme_override_constants/shadow_offset_y = 4
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_1eqlm")
-theme_override_font_sizes/font_size = 40
-text = "P1 Surrently Selected Bubble: Soap"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Character_Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -85,38 +72,18 @@ text = "Character: SCUBAHOOD"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Soda" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 42
-text = "Soda"
-
-[node name="Soap" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 42
-text = "Soap
-"
-
-[node name="Gum" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 42
-text = "Gum"
-
-[node name="HBoxContainerCharacterSelector" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
-layout_mode = 2
-alignment = 1
-
-[node name="Scubahood" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector"]
+[node name="Scubahood" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 text = "Scubahood"
 icon = ExtResource("2_oehbm")
 
-[node name="Dagon" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector"]
+[node name="Dagon" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
 layout_mode = 2
 text = "Dagon"
 icon = ExtResource("3_c563x")
 
-[node name="CollosusOfRhodes" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector"]
+[node name="CollosusOfRhodes" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector"]
 layout_mode = 2
 text = "Collosus of Rhodes"
 icon = ExtResource("4_pdfg5")
@@ -151,19 +118,6 @@ layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="Weapon_Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
-layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 4
-theme_override_constants/shadow_offset_y = 4
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_1eqlm")
-theme_override_font_sizes/font_size = 40
-text = "P2 Surrently Selected Bubble: Soap"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Character_Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -177,38 +131,18 @@ text = "Character: DAGON"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Soda2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 42
-text = "Soda"
-
-[node name="Soap2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 42
-text = "Soap
-"
-
-[node name="Gum2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 42
-text = "Gum"
-
-[node name="HBoxContainerCharacterSelector2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
-layout_mode = 2
-alignment = 1
-
-[node name="Scubahood2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2"]
+[node name="Scubahood2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 text = "Scubahood"
 icon = ExtResource("2_oehbm")
 
-[node name="Dagon2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2"]
+[node name="Dagon2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
 layout_mode = 2
 text = "Dagon"
 icon = ExtResource("3_c563x")
 
-[node name="CollosusOfRhodes2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2"]
+[node name="CollosusOfRhodes2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2"]
 layout_mode = 2
 text = "Collosus of Rhodes"
 icon = ExtResource("4_pdfg5")
@@ -217,20 +151,14 @@ icon = ExtResource("4_pdfg5")
 visible = false
 layout_mode = 1
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soda" to="." method="_on_soda_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Soap" to="." method="_on_soap_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Gum" to="." method="_on_gum_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector/Scubahood" to="." method="_on_scubahood_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector/Dagon" to="." method="_on_dagon_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/HBoxContainerCharacterSelector/CollosusOfRhodes" to="." method="_on_collosus_of_rhodes_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Scubahood" to="." method="_on_scubahood_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/Dagon" to="." method="_on_dagon_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector/CollosusOfRhodes" to="." method="_on_collosus_of_rhodes_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ToggleLookMode" to="." method="_on_toggle_look_mode_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Option" to="." method="_on_option_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soda2" to="." method="_on_soda2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Soap2" to="." method="_on_soap2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Gum2" to="." method="_on_gum2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2/Scubahood2" to="." method="_on_scubahood_2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2/Dagon2" to="." method="_on_dagon_2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/HBoxContainerCharacterSelector2/CollosusOfRhodes2" to="." method="_on_collosus_of_rhodes_2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Scubahood2" to="." method="_on_scubahood_2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/Dagon2" to="." method="_on_dagon_2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainerWeaponSelector2/CollosusOfRhodes2" to="." method="_on_collosus_of_rhodes_2_pressed"]
 [connection signal="cancel" from="Option_Menu" to="." method="_on_option_menu_cancel"]
