@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cry5y32md5mej"]
+[gd_scene load_steps=3 format=3 uid="uid://cry5y32md5mej"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_mnmga"]
-[ext_resource type="Texture2D" uid="uid://fivsn240eesv" path="res://assets/sprites/head.png" id="2_152j0"]
 
 [sub_resource type="FontVariation" id="FontVariation_xjxuq"]
 
@@ -109,7 +108,6 @@ layout_mode = 0
 offset_right = 1112.0
 offset_bottom = 608.0
 scale = Vector2(0.146462, 0.195417)
-texture = ExtResource("2_152j0")
 
 [node name="HP2" type="Control" parent="."]
 visible = false
@@ -152,5 +150,4 @@ offset_left = -124.0
 offset_right = 988.0
 offset_bottom = 608.0
 scale = Vector2(0.146462, 0.195417)
-texture = ExtResource("2_152j0")
 flip_h = true

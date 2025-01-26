@@ -12,6 +12,8 @@ extends CanvasLayer
 @onready var health_bar2 = $HP2/HP
 @onready var black_bar1 = $HP1/black_bar
 @onready var black_bar2 = $HP2/black_bar
+@onready var texture_rect1 = $HP1/TextureRect
+@onready var texture_rect2 = $HP2/TextureRect2
 
 var max_health_bar_1
 var max_health_bar_2
@@ -30,7 +32,21 @@ var Player2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	# P1 image
+	match Global.character_p1:
+		"scubahood":
+			texture_rect1.texture = preload("res://assets/sprites/scubahood_battle_image.png")
+		"dagon":
+			texture_rect1.texture = preload("res://assets/sprites/dagon_battle_image.png")
+		"collosus":
+			texture_rect1.texture = preload("res://assets/sprites/collosus_battle_image.png")
+	match Global.character_p2:
+		"scubahood":
+			texture_rect2.texture = preload("res://assets/sprites/scubahood_battle_image.png")
+		"dagon":
+			texture_rect2.texture = preload("res://assets/sprites/dagon_battle_image.png")
+		"collosus":
+			texture_rect2.texture = preload("res://assets/sprites/collosus_battle_image.png")
 
 func set_player(player : CharacterBody2D , nb_player : int ):
 	if( nb_player==1 ):
