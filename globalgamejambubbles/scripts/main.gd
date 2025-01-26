@@ -2,6 +2,9 @@ extends Node2D
 
 @onready var HUD = $HUD
 
+func game_end(id:int):
+	print("Player" , id, " won the game")
+
 # Called when you hit play.
 func _ready() -> void:
 	# Randomly select and instantiate stage
@@ -18,7 +21,7 @@ func _ready() -> void:
 	p1.player_scale = Vector2(3, 3)
 	get_tree().current_scene.add_child(p1)
 	HUD.display_HUD_player(p1)
-	
+	p1.defeat.connect(game_end)
 	
 	# Instantiate player 2
 	var p2 = player_scene.instantiate()
@@ -28,8 +31,7 @@ func _ready() -> void:
 	p2.player_scale = Vector2(3, 3)	
 	get_tree().current_scene.add_child(p2)
 	HUD.display_HUD_player(p2)
-	
-
+	p2.defeat.connect(game_end)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

@@ -438,7 +438,6 @@ scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_dioyl")
 offset = Vector2(-14, 12)
 
-
 [node name="reload_message" type="Label" parent="."]
 visible = false
 offset_left = -30.0
